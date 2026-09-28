@@ -1,18 +1,16 @@
-# Final dyadic plateau rigidity — 2026-09-29
+# Final dyadic plateau rigidity — corrected 2026-09-29
 
 ## Status
 
-This note records a structural lemma for a hypothetical unbounded least positive counterexample to the accelerated odd-only Collatz map. It is **not** a proof of the conjecture.
+Structural lemma for a hypothetical unbounded least positive counterexample to the accelerated odd-only Collatz map. This is **not** a proof of the conjecture.
 
 Let
 
 \[
-T(x)=\frac{3x+1}{2^{a(x)}},\qquad a(x)=v_2(3x+1)
+T(x)=\frac{3x+1}{2^{a(x)}},\qquad a(x)=v_2(3x+1),
 \]
 
-on positive odd integers, and suppose \(N\) is the least positive counterexample. Write the odd-only orbit as \(x_0=N,x_1,x_2,\ldots\).
-
-Define
+and suppose \(N\) is the least positive counterexample. Write its odd-only orbit as \(x_i\), and define
 
 \[
 h_i=\log_2(x_i/N),\qquad m_i=\lfloor h_i\rfloor,
@@ -21,8 +19,6 @@ h_i=\log_2(x_i/N),\qquad m_i=\lfloor h_i\rfloor,
 \[
 b_i=a_i-1,\qquad \omega=\log_2(3/2),
 \]
-
-and
 
 \[
 \varepsilon_i=\log_2\left(1+\frac1{3x_i}\right)>0.
@@ -34,53 +30,51 @@ Then exactly
 h_{i+1}=h_i+\omega-b_i+\varepsilon_i.
 \]
 
-If
+With
 
 \[
-c_i=\lfloor \{h_i\}+\omega+\varepsilon_i\rfloor\in\{0,1\},
+c_i=\lfloor\{h_i\}+\omega+\varepsilon_i\rfloor\in\{0,1\},
 \]
 
-then
+we get the exact integer-height equation
 
 \[
 \boxed{m_{i+1}=m_i+c_i-b_i.}
 \]
 
-Because \(b_i\ge0\), every step raises the dyadic height index by at most one.
+Since \(b_i\ge0\), a single step can raise the dyadic layer index by at most one.
 
 ---
 
-## 1. Final plateau before crossing a dyadic layer
+## 1. The final contiguous plateau in one dyadic layer
 
-Fix a sufficiently high layer \(r\). Before the orbit first reaches layer \(r+1\), consider the **last** time it enters layer \(r\) from below. From that entry until the first hit of layer \(r+1\), every intermediate state has
+Fix a sufficiently high layer \(r\), with band
 
 \[
-m_i=r.
+H\le x<2H,\qquad H=2^rN.
 \]
 
-Call this the final \(r\)-plateau.
+Because a nonperiodic divergent orbit eventually leaves every bounded set, layer \(r\) has a **last visit**. Let the final \(r\)-plateau be the maximal contiguous block of states in layer \(r\) ending at that last visit. Its last step exits upward to layer \(r+1\); otherwise, if it exited downward, the orbit would later have to revisit layer \(r\) before escaping above it, contradicting finality.
 
-For every internal step of this plateau,
+For every internal plateau step,
 
 \[
 m_{i+1}-m_i=0,
 \]
 
-so the exact state equation gives
+so
 
 \[
 \boxed{b_i=c_i.}
 \]
 
-Therefore
+Hence internally
 
 \[
-\boxed{a_i=1+c_i\in\{1,2\}}
+\boxed{a_i=1+c_i\in\{1,2\}.}
 \]
 
-at every internal plateau step.
-
-The final crossing step satisfies
+For the final crossing,
 
 \[
 m_{i+1}-m_i=1.
@@ -92,203 +86,219 @@ Since \(c_i\le1\) and \(b_i\ge0\), this forces
 \boxed{c_i=1,\quad b_i=0,\quad a_i=1.}
 \]
 
-The entry step from layer \(r-1\) into layer \(r\) is forced to have the same form. Thus every final plateau is bracketed by two identical `up-defects` \((c,b)=(1,0)\), while all internal steps satisfy \(b=c\) exactly.
-
-This removes the earlier need for a majorization argument on the final plateau: there is no freedom in the internal exponent word once the carry sequence is known.
+Thus the **exit** of every final plateau is rigid.
 
 ---
 
-## 2. Consequence for residues at upward layer crossings
+## 2. Correct entry dichotomy
 
-At every upward layer crossing,
+The earlier version of this note incorrectly claimed that the plateau entry must also come from below. That is not always true: the orbit may have visited a higher layer and later dropped back into layer \(r\) before its final escape.
+
+The correct entry classification is:
+
+### Light entry: from below
+
+If the state immediately before the plateau lies in a lower layer, then the layer index must increase by exactly one (upward jumps larger than one are impossible), so
 
 \[
-a_i=1,
+\boxed{c=1,\ b=0,\ a=1.}
 \]
 
-so
+This is the same up-defect as the final exit.
+
+### Heavy entry: from above
+
+If the plateau is entered from a higher layer, then the entering step has
+
+\[
+m_{i+1}-m_i\le-1.
+\]
+
+From \(m_{i+1}-m_i=c-b\) and \(c\le1\), this requires a positive excess valuation \(b\), often large when several layers are crossed downward.
+
+Such a step is exactly where the earlier side-branch lemma becomes useful. If \(a=b+1\) and
+
+\[
+r'=\left\lfloor\frac{a-1}{2}\right\rfloor,
+\]
+
+then the existence of lowered reverse exponents gives
+
+\[
+\boxed{x\ge4^{r'}N+\frac{4^{r'}-1}{3}.}
+\]
+
+So entry from above carries an explicit altitude/side-branch cost.
+
+This yields a clean local coverage split:
+
+\[
+\boxed{
+\text{final plateau entry}
+=\text{light up-defect from below}
+\quad\text{or}\quad
+\text{heavy side-branch event from above}.
+}
+\]
+
+---
+
+## 3. Residue and geometry of the rigid upward exit
+
+At every upward dyadic crossing we have \(a_i=1\), hence
 
 \[
 x_{i+1}=\frac{3x_i+1}{2}.
 \]
 
-For the predecessor to be integral in the reverse formula
+The reverse formula
 
 \[
-x_i=\frac{2x_{i+1}-1}{3},
-\]
-
-we must have
-
-\[
-\boxed{x_{i+1}\equiv2\pmod3.}
-\]
-
-Hence every dyadic record-entry state of a hypothetical unbounded least counterexample lies in the residue class \(2\bmod3\).
-
-Also, if the current band is \([H,2H)\), the crossing condition
-
-\[
-\frac{3x_i+1}{2}\ge2H
+x_i=\frac{2x_{i+1}-1}{3}
 \]
 
 forces
 
 \[
-x_i\ge\frac{4H-1}{3},
+\boxed{x_{i+1}\equiv2\pmod3.}
 \]
 
-while the new entry state satisfies
+If the current band is \([H,2H)\), crossing upward also forces
+
+\[
+x_i\ge\frac{4H-1}{3}
+\]
+
+and
 
 \[
 2H\le x_{i+1}<3H+\frac12.
 \]
 
-After rescaling the new band to \([1,2)\), record entries always land in its lower \(3/2\)-portion.
+So every rigid upward exit occurs from the top third of the current dyadic band, and its target lies in the lower \(3/2\)-portion of the next band.
 
 ---
 
-## 3. Plateau valuation word has two-sided bounded critical drift
+## 4. Two-sided bounded drift on the plateau
 
-Let a final plateau start at \(x_s\in[H,2H)\), and define
+Let the plateau begin at \(x_s\in[H,2H)\), and put
 
 \[
 \theta_0=\log_2(x_s/H)\in[0,1).
 \]
 
-For a prefix of \(j\) internal plateau steps, set
+For an internal prefix of length \(j\), define
 
 \[
 E_j=\sum_{q<j}\varepsilon_{s+q}.
 \]
 
-Because \(b=c\) internally, the cumulative extra-valuation count satisfies
+Because \(b=c\) internally,
 
 \[
-B_j=\sum_{q<j}b_{s+q}
+B_j:=\sum_{q<j}b_{s+q}
 =\left\lfloor\theta_0+j\omega+E_j\right\rfloor.
 \]
 
-The valuation sum is
-
-\[
-S_j=j+B_j.
-\]
-
-With
+The total valuation is \(S_j=j+B_j\). With
 
 \[
 \alpha=\log_2 3=1+\omega,
 \]
 
-the critical drift becomes
+we obtain
 
 \[
-R_j=S_j-\alpha j
-=B_j-\omega j
+R_j:=S_j-\alpha j
 =\theta_0+E_j-\{\theta_0+j\omega+E_j\}.
 \]
 
-Therefore every proper plateau prefix satisfies
+Hence every proper internal prefix satisfies
 
 \[
 \boxed{-1<R_j<1+E_j.}
 \]
 
-The final crossing prefix differs by one missing \(b\)-unit and satisfies
+Including the final forced crossing removes one expected extra-valuation unit, yielding
 
 \[
 \boxed{-2<R_L<E_L.}
 \]
 
-Thus every final dyadic plateau is automatically a finite **two-sided bounded-drift valuation word**.
+So every final plateau is a finite two-sided bounded-drift valuation word.
 
 ---
 
-## 4. Elementary uniform correction bound inside one band
+## 5. Correction bound and short-plateau rigidity
 
-A divergent orbit cannot repeat a positive state, so the odd states visited in a single band are distinct. After the first accelerated step, odd Syracuse outputs are not divisible by 3. Hence the number of possible odd orbit states in \([H,2H)\) is at most about \(H/3+O(1)\).
-
-Since each plateau state satisfies \(x\ge H\),
+Every plateau state is at least \(H\), hence
 
 \[
-\varepsilon_i
-=\log_2\left(1+\frac1{3x_i}\right)
-<\frac1{3H\ln2}.
+0<E_L<\frac{L}{3H\ln2}.
 \]
 
-Consequently the total correction accumulated during any single-band plateau obeys the elementary uniform bound
+If \(L=O(\log H)\), this perturbation is exponentially small as a function of \(L\). Comparing
 
 \[
-E_{\rm band}
-\lesssim \frac1{9\ln2}
-\approx0.1603,
+C_j=\lfloor\theta_0+j\omega+E_j\rfloor
 \]
 
-up to the obvious endpoint \(O(1/H)\) term.
-
-So, even without any probabilistic input, a final plateau is a near-critical word with a uniformly small Archimedean correction.
-
-A stronger external input is available for divergent trajectories: García–Tal prove Banach-density zero for an aperiodic orbit, and a 2026 quantitative refinement by Curry claims a window bound of the form
+with the fixed-intercept mechanical carries
 
 \[
-\#(\mathcal O\cap[a,a+X))\le C_\beta X^\beta\log(2X),\qquad \beta>\beta_*\approx0.9653844.
+D_j=\lfloor\theta_0+j\omega\rfloor
 \]
 
-If that refinement is used, the correction mass of a high dyadic band tends to zero like \(H^{\beta-1}\log H\). This is useful context, but the present structural lemma does not depend on it.
+shows that two distinct sensitive indices would imply
+
+\[
+\|(j-k)\omega\|<2E_L.
+\]
+
+Any effective lower bound for nonzero integer linear forms in \(\log2\) and \(\log3\) is polynomial in \(|j-k|\), while \(E_L\) is exponentially small. Thus sufficiently high short plateaus have at most one carry-sensitive index.
+
+Consequently their internal valuation word is a fixed-intercept critical mechanical word plus at most one local adjacent carry transposition `01 -> 10`, while the final upward crossing contributes one additional forced defect.
 
 ---
 
-## 5. Exact-realizer reduction
+## 6. Exact-realizer reduction for long plateaus
 
-For a length-\(L\) accelerated valuation word \(a_0,\ldots,a_{L-1}\) with total valuation
+For a length-\(L\) valuation word \(a_0,\ldots,a_{L-1}\), with
 
 \[
-A=\sum_{i<L}a_i,
+A=\sum a_i,
 \]
 
-standard parity/valuation arithmetic determines the starting odd integer in one residue class modulo a power of two (in the exact realizer formalism, modulo \(2^{A+1}\) when terminal oddness is included).
+the affine identity is
 
-Hence, if a final plateau lies in \([H,2H)\) and
+\[
+3^Lx+C=2^Ay.
+\]
+
+Requiring the terminal accelerated state \(y\) to be odd pins the starting odd integer to one residue class modulo
+
+\[
+2^{A+1}.
+\]
+
+For plateau words, \(A=\alpha L+O(1)\). Hence once
 
 \[
 2^{A+1}>2H,
 \]
 
-then there is at most one positive representative of that realizer class inside the band. The actual plateau start is therefore the unique small positive realizer of its valuation word.
-
-Since on the plateau
+or roughly
 
 \[
-A=\alpha L+O(1),
+L>\frac{\log_2H+O(1)}{\log_2 3},
 \]
 
-a sufficient rough threshold is
+there is at most one positive representative of that exact-realizer class inside \([H,2H)\).
 
-\[
-\boxed{L>\frac{\log_2 H+O(1)}{\log_2 3}.}
-\]
+Thus the plateau problem splits into:
 
-Thus a final plateau only modestly longer than \(0.63093\log_2 H\) already turns into an exact **small-realizer problem for a bounded-drift, near-mechanical valuation word**.
+- **long plateaus:** a moving-anchor small-realizer problem for two-sided bounded-drift words;
+- **short plateaus:** a constant-defect critical mechanical/Sturmian problem;
+- **entry from above:** a heavy side-branch event with an explicit altitude cost.
 
-This is precisely the arithmetic-placement / moving-anchor frontier emphasized in current exact-realizer approaches: abstract critical mechanical words are easy to write down, but proving that no fixed natural integer can keep realizing the required moving finite prefixes is the hard part.
-
----
-
-## 6. Current reduction
-
-A hypothetical unbounded least counterexample must therefore supply infinitely many dyadic layers whose final escape segment has all of the following properties:
-
-1. it stays in one band \([H,2H)\) until the last step;
-2. internally \(a_i=1+c_i\in\{1,2\}\) exactly;
-3. the critical drift is uniformly two-sided bounded;
-4. the final crossing is the forced defect \((c,b)=(1,0)\);
-5. the next-layer entry is \(2\bmod3\);
-6. if the segment length exceeds \(\approx(\log_2 H)/\log_2 3\), its start is an anomalously small exact realizer of that moving near-mechanical word.
-
-So the proof problem can be sharpened to a dichotomy:
-
-- **long final plateaus:** exclude anomalously small realizers of bounded-drift moving-anchor words;
-- **short final plateaus:** exploit the forced repeated up-defects / record-entry residue structure.
-
-The first branch matches the currently known moving-anchor obstruction. The second branch appears less developed and may be worth attacking separately.
+This corrected trichotomy is the current useful structural reduction.
