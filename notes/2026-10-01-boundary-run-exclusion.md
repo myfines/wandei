@@ -132,18 +132,19 @@ Hence
 
 Equivalently, there is no run of 35 consecutive mechanical transitions while staying on the critical boundary.
 
-## 4. Global consequence: at least 726,809,883 excursions
+## 4. Global consequence: at least 726,809,885 excursions
 
-The earlier correction-budget lemma gives, for a first-candidate survivor,
+The exact rational correction-budget certificate gives, for a first-candidate survivor,
 
 \[
-\frac{1}{k}\#\{0\le j<k:h_j=0\}>0.353028761.
+\frac{1}{k}\#\{0\le j<k:h_j=0\}
+>0.35302876193514051414\ldots.
 \]
 
-Thus the number `z` of boundary times obeys
+Thus the integer number `z` of boundary times obeys
 
 \[
-z\ge25438345937.
+\boxed{z\ge25438346005.}
 \]
 
 Since every maximal boundary run has length at most 35, there must be at least
@@ -151,7 +152,7 @@ Since every maximal boundary run has length at most 35, there must be at least
 \[
 \left\lceil\frac{z}{35}\right\rceil
 =
-726809884
+726809886
 \]
 
 separate boundary runs.
@@ -171,7 +172,7 @@ r_j=2,\qquad a_j=1,\qquad h_j=0\to h_{j+1}=1.
 Therefore any surviving first-candidate prefix must contain at least
 
 \[
-\boxed{726809883}
+\boxed{726809885}
 \]
 
 unit upcrossings `0->1` before the first coefficient contraction.
@@ -187,6 +188,6 @@ The remaining task is to turn this massive excursion count into an arithmetic co
 - sampled cofactors cannot retain any prime `p>7` across consecutive returns;
 - recycled large primes obey multiplicative-order congruences for `3/2 mod p`.
 
-A useful next theorem would show that more than `7.26e8` critical-boundary excursions cannot be realized while the correction ratio remains high enough for the first candidate and the sampled prime support keeps satisfying the turnover/recycling constraints.
+A useful next theorem would show that more than `7.268e8` critical-boundary excursions cannot be realized while the correction ratio remains high enough for the first candidate and the sampled prime support keeps satisfying the turnover/recycling constraints.
 
 A secondary computational direction is to lower the forbidden boundary-run length below 36 states. Candidate counts grow by roughly a factor of three per removed transition, so length 34/33 will need a more compressed certificate or shared-trajectory memoization rather than blind enumeration.
