@@ -148,19 +148,19 @@ Every maximal boundary run has at most `35` states.
 The boundary-density lower bound gives
 
 \[
-z=\#\{0\le j<k:h_j=0\}\ge25438345937.
+z=\#\{0\le j<k:h_j=0\}\ge25438346005.
 \]
 
 Therefore there are at least
 
 \[
-\left\lceil\frac z{35}\right\rceil=726809884
+\left\lceil\frac z{35}\right\rceil=726809886
 \]
 
 separate boundary runs, and at least
 
 \[
-\boxed{726809883}
+\boxed{726809885}
 \]
 
 unit departures `h=0 -> 1`. Every such departure is forced to satisfy
