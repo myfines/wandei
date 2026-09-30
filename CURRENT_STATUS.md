@@ -2,7 +2,7 @@
 
 Updated: 2026-10-01
 
-This file is the compact recovery point for future chats/agents. The repository contains partial results and exact finite certificates only; there is **no claimed proof of Collatz**.
+This is the compact recovery point for future chats/agents. The repository contains partial results and exact finite certificates only; there is **no claimed proof of Collatz**.
 
 ## 1. Main coordinate and branch split
 
@@ -18,184 +18,184 @@ Assume for contradiction that a least positive counterexample `N` exists. Write
 a_j=v_2(3x_j+1),\qquad A_k=\sum_{j<k}a_j,
 \]
 
-and
-
 \[
-h_k=\lfloor k\log_2 3\rfloor-A_k.
+h_k=\lfloor k\log_2 3\rfloor-A_k,
 \]
 
-Let
+and
 
 \[
 r_k=\lfloor(k+1)\log_2 3\rfloor-\lfloor k\log_2 3\rfloor\in\{1,2\}.
 \]
 
-Then the exact defect recurrence is
+Then exactly
 
 \[
 \boxed{h_{k+1}=h_k+r_k-a_k.}
 \]
 
-Two main branches remain.
+Two branches remain.
 
 ### A. First coefficient-contraction branch
 
-Before the first contraction, `h_k>=0`. Continued-fraction / Denjoy--Koksma analysis isolates the first relevant candidate
+Continued-fraction / Denjoy--Koksma analysis isolates the first relevant candidate
 
 \[
 (k,A_k)=(72057431991,114208327604).
 \]
 
-Combining the live computational lower frontier with the correction ceiling gives the narrow seed interval
+The clean certified seed window is
 
 \[
 \boxed{2075\cdot2^{60}\le N<\frac43\,2^{71}.}
 \]
 
-A sharper numerical ceiling is about `2^71.413083842`, but the clean rational certificate above is the committed rigorous bound.
+(A sharper numerical ceiling is about `2^71.413083842`.)
 
-The critical-defect budget shows that any survivor at this first candidate must spend more than about 35.3% of the pre-contraction times exactly on the boundary `h_j=0`.
+The correction-defect budget forces more than `35.3028761%` of the `j<k` times to lie exactly on the critical boundary `h_j=0`.
 
 ### B. Escape branch
 
-If the multiplicative coefficient never contracts, then `h_k>=0` for all `k`. For a genuinely divergent orbit, reciprocal/correction summability gives
+If the coefficient never contracts, `h_k>=0` for all `k`. For a genuinely divergent orbit, the reciprocal/correction argument gives
 
 \[
 \boxed{h_k\to+\infty,\qquad \sum_k2^{-h_k}<\infty.}
 \]
 
-The remaining problem is arithmetic realizability of such a sparse-defect path by one positive integer seed.
+The remaining issue is arithmetic realizability of such a path by one positive integer seed.
 
-## 2. Latest exact finite progress in branch A
+## 2. Latest exact progress in branch A
 
-### Pure mechanical prefix
+### First 46 steps: low-complexity exclusion
 
-For the first 46 odd-only steps, the mechanical word has
-
-\[
-A_{46}=72.
-\]
-
-The exact seed congruence for this word gives
+The pure 46-step mechanical prefix has `A_46=72` and fixes
 
 \[
-N_{\rm mech}=4697939311072332635131,
+N=4697939311072332635131,
 \]
 
-which lies above the first-candidate upper window. Therefore a first-candidate survivor cannot remain on `h=0` for all first 46 steps.
+which lies above the first-candidate window.
 
-### Unit-excursion certificate
-
-`src/unit_excursion_cert.py` exhausts the first 46-step defect paths satisfying
-
-- `h_j in {0,1}`;
-- at most two upcrossings `0->1`;
-- between state changes the valuation equals the fixed mechanical letter.
-
-Exact counts:
+`src/unit_excursion_cert.py` then exhausts the first-46 defect paths with `h in {0,1}` and at most two `0->1` upcrossings:
 
 - exactly one upcrossing: `609` scripts;
-- exactly two upcrossings: `56,405` scripts;
-- total nontrivial class: `57,014` scripts.
+- exactly two: `56,405` scripts;
+- total nontrivial class: `57,014` scripts;
+- exact seed-window survivors: `4,872` integers;
+- all descend below themselves, latest at odd-only step `145`.
 
-Intersecting their exact seed residue classes with
-
-\[
-2075\cdot2^{60}\le N<\frac43\,2^{71}
-\]
-
-leaves only `4,872` concrete integer seeds. Every one is checked directly and falls below itself; the latest first descent is odd-only step `145`.
-
-Therefore any first-candidate survivor must satisfy
-
-\[
-\boxed{
-\text{within the first 46 odd steps, either }h\ge2
-\text{ or there are at least three unit upcrossings.}
-}
-\]
+Thus a survivor must, within the first 46 odd steps, either reach `h>=2` or make at least three unit upcrossings.
 
 Candidate-row digest:
 
 `b9dcfee89ca967a162e9d0e7a18e8ce49ccad111b665d3fa765e714ff8989b05`
 
+### Global boundary-run exclusion
+
+This is the newest and stronger result.
+
+At every boundary time `h_j=0` before the first candidate contraction, the product formula plus the seed window gives
+
+\[
+\boxed{x_j<3N<2^{73}.}
+\]
+
+If 39 consecutive boundary states occurred, the 38 transitions between them would be a shifted length-38 mechanical word. Such a word has at most `39` possible factors (phase partition of an irrational mechanical word).
+
+`src/boundary_run_cert.py` enumerates all 39 factors, computes every exact local seed lift in
+
+\[
+2075\cdot2^{60}\le x_j<2^{73},
+\]
+
+and checks all `103,987` concrete local states. Every one falls below the verified frontier; the latest does so after `176` odd-only steps.
+
+Therefore
+
+\[
+\boxed{\text{no first-candidate prefix can contain 39 consecutive times with }h_j=0.}
+\]
+
+Certificate digest:
+
+`3cc9c7b8230302f1619609530fa635e31b94d87215caa3c479a8b79137da64f5`
+
+Combining this with boundary density > `0.353028761` gives
+
+\[
+z=\#\{0\le j<k:h_j=0\}\ge25438345937.
+\]
+
+Since each maximal boundary run has length at most `38`, there are at least
+
+\[
+669430157
+\]
+
+separate boundary runs. Leaving `h=0` upward is possible only via `r_j=2,a_j=1`, so a survivor must contain at least
+
+\[
+\boxed{669430156}
+\]
+
+unit `0->1` critical-defect excursions before the first contraction.
+
+This converts the former qualitative “a defect must occur” statement into a massive global oscillation requirement.
+
 ## 3. Sampled mod-9 / prime-support structure
 
-For consecutive sampled `2 mod 9` returns, the normalized transition can be written
+For consecutive sampled `2 mod 9` returns,
 
 \[
 3^{q_j}s_j+\eta_{j+1}=2^{t_{j+1}}s_{j+1},
 \qquad \eta_j\in\{3,15,63\}.
 \]
 
-Exact consequences already committed:
+Committed exact consequences:
 
-- adjacent large-prime support turns over:
-  \[
-  \gcd(s_j,s_{j+1})\mid\eta_{j+1},
-  \]
-  so primes `p>7` cannot divide consecutive cofactors;
+- `gcd(s_j,s_{j+1}) | eta_{j+1}`, so primes `p>7` cannot divide consecutive cofactors;
 - two-step recycling forces a discrete-log / multiplicative-order congruence for `3/2 mod p`;
-- for bounded sampled odd-run lengths `q_j`, `P`-smooth cofactors have density zero for every fixed `P` (S-unit finiteness argument);
-- hence a hypothetical sampled escape tail has a dichotomy: unbounded spike lengths, or density-one refresh by increasingly large prime factors.
+- if sampled odd-run lengths `q_j` are bounded, `P`-smooth cofactors have density zero for every fixed `P` (S-unit finiteness);
+- hence an escape tail has a dichotomy: unbounded spikes, or density-one refresh by increasingly large prime factors.
 
-This is structural progress, not yet a contradiction.
+No contradiction has yet been extracted from this structure.
 
 ## 4. Important dead ends / cautions
 
-Do not restart these as if they were untested:
+Do not restart these as if untested:
 
-1. A universal local exponential lower bound on endpoint residues is false. Small residues can survive long local scripts because the path may pass through a smaller intermediate value; global least-counterexample minimality must be included.
-2. Pure mechanical / Sturmian shadowing alone is insufficient. Positive integer seeds can shadow critical 2-adic scripts for long finite times.
-3. Multiplicative-order results for generic primes do not immediately apply because orbit-generated primes could concentrate on exceptional small-order sets.
-4. Finite computation alone is not a Collatz proof unless converted into a finite certificate covering a mathematically complete class.
+1. A universal local exponential lower bound on endpoint residues is false; global least-counterexample minimality must be included.
+2. Pure mechanical/Sturmian shadowing alone is insufficient; positive integers can shadow critical 2-adic scripts for long finite times.
+3. Generic multiplicative-order theorems do not automatically control orbit-generated primes, which could concentrate on exceptional small-order sets.
+4. Finite computation is useful only when attached to a mathematically complete finite class/certificate.
+5. Reciprocal summability in the escape branch is a derived consequence of a quantitative Garcia--Tal orbit-sparsity estimate, not merely of “Banach density zero”; preserve that distinction in future writeups.
 
-## 5. Best next targets
+## 5. Best next target
 
-### Immediate finite extension
+The first-candidate branch is now forced to make at least `669,430,156` boundary departures while maintaining a correction ratio high enough to survive.
 
-Extend `unit_excursion_cert.py` to exactly three upcrossings while keeping `h in {0,1}`. There are about 1.9 million such first-46 scripts, so this is still computationally realistic, but it is secondary to the theoretical bridge below.
+The next theorem should connect these forced excursions to the sampled arithmetic structure. The desired bridge is roughly:
 
-### Main theoretical bridge: boundary-return compression
+> hundreds of millions of forced `a=1` boundary departures and compensating returns cannot coexist with the mod-9 prime-turnover / recycling constraints while keeping the first-candidate correction budget.
 
-The first-candidate defect budget forces >35.3% boundary contacts `h_j=0`. A useful next lemma should exploit **returns to the boundary**, not just their density.
+Promising handles:
 
-At a boundary return of length `m`,
+- every departure is a forced `r_j=2, a_j=1` event at a definite mechanical phase;
+- every return requires compensating excess valuation;
+- large primes `p>7` cannot persist across adjacent sampled cofactors;
+- recycled primes obey multiplicative-order clocks for `3/2 mod p`;
+- the boundary-state bound `x_j<2^73` is uniform throughout the full 72-billion-step first-candidate prefix and may allow additional finite local certificates.
 
-\[
-A_m=\lfloor m\log_2 3\rfloor,
-\]
+A secondary computational target is to lower the forbidden boundary-run length below 39 states (the length-38 certificate is already exact and fast).
 
-and the exact odd-prefix congruence fixes the seed modulo
-
-\[
-2^{A_m+1}.
-\]
-
-For `m>=46`, this modulus is already larger than the entire first-candidate seed window. Thus each realized boundary-return word determines at most one seed in that window.
-
-The desired compression theorem is roughly:
-
-> repeated boundary returns of a least-counterexample prefix cannot keep producing admissible unique seeds while simultaneously satisfying the sampled mod-9 prime-turnover constraints and the correction budget.
-
-A successful version of this lemma would convert the 35.3% boundary-density statement into a global contradiction and could close the first coefficient-contraction branch without enumerating arbitrary high-defect paths.
-
-### Escape branch target
-
-For the no-contraction branch, combine
-
-\[
-h_k\to\infty,\quad \sum2^{-h_k}<\infty
-\]
-
-with the sampled prime-refresh dichotomy. The missing theorem is a bad-prime-concentration exclusion: an orbit should not be able to refresh almost all large prime support from primes with anomalously small `ord_p(3/2)` while also satisfying the critical-drift/correction constraints.
+For the escape branch, the missing theorem remains a bad-prime-concentration exclusion compatible with `h_k->infinity` and `sum 2^{-h_k}<infinity`.
 
 ## 6. Files to read first after context loss
 
-1. `CURRENT_STATUS.md` (this file)
+1. `CURRENT_STATUS.md`
 2. `notes/2026-09-29-first-contraction-certificate.md`
 3. `notes/2026-10-01-critical-defect-budget.md`
-4. `notes/2026-10-01-first-46-mechanical-exclusion.md`
+4. `notes/2026-10-01-boundary-run-exclusion.md`
 5. `notes/2026-10-01-unit-excursion-certificate.md`
 6. `notes/2026-10-01-prime-turnover-clock.md`
 7. `notes/2026-09-29-critical-defect-coordinate.md`
