@@ -50,9 +50,7 @@ Arithmetic realizability remains open.
 
 ### Pair-constrained weighted boundary density
 
-`src/pair_constrained_boundary_density_cert.py` combines the exact correction budget, rotation weights, Denjoy--Koksma, and the forced closure rule at r=1 boundary states.
-
-It certifies
+`src/pair_constrained_boundary_density_cert.py` certifies
 
 z=#{0<=j<k : h_j=0} >= 35,251,435,711.
 
@@ -73,16 +71,16 @@ Aggregate exact scan:
 
 Therefore no first-candidate prefix can contain 30 consecutive boundary states. Every maximal boundary run has at most 29 states.
 
-Combining with the boundary count:
+Combining with the boundary count gives
 
 - boundary runs >= 1,215,566,749;
-- unit departures h=0->1 >= 1,215,566,748.
+- actual departures h=0->1 >= 1,215,566,748.
 
 Every departure is forced to satisfy r=2,a=1.
 
-### Cheap/non-cheap excursion structure
+### IMPORTANT ERRATUM: no global one-quarter non-cheap count
 
-A cheapest immediate excursion is
+A cheap immediate excursion is
 
 h: 0->1->0,
 
@@ -90,17 +88,20 @@ mechanical letters 21,
 
 valuations 12.
 
-The exact rotation lemma proves at most three such cheap excursions can occur consecutively.
+The exact rotation lemma proves `(21)^4` is impossible, so at most three cheap excursions can occur **immediately back-to-back with no boundary waiting transitions**.
 
-Hence at least
+It does **not** follow that one out of every four excursions in the global excursion sequence is non-cheap, because after a return the orbit may remain at h=0 for several mechanical transitions before the next departure.
 
-303,891,687
+Therefore the previously quoted global lower bounds
 
-excursions are non-cheap.
+- 181,702,471 non-cheap excursions, and
+- 303,891,687 non-cheap excursions
 
-Heavy two-step returns are impossible, so every non-cheap excursion has length at least 3.
+are retracted. See `notes/2026-10-01-erratum-cheap-excursion-global-count.md`.
 
-### Three-step classification
+The 29-state run cap and 1,215,566,748 departure lower bound remain valid.
+
+### Three-step local classification
 
 Every length-three mechanical departure word is exactly 212 or 221.
 
@@ -109,11 +110,11 @@ The valuation patterns are:
 - 212: only 113;
 - 221: either 113 or 122.
 
-Rotation repetition caps:
+The local rotation repetition caps are also adjacency statements only:
 
-- (221)^2 is impossible;
-- (212)^3 is impossible;
-- two consecutive 212 factors are possible.
+- `(221)^2` is impossible;
+- `(212)^3` is impossible;
+- two immediately consecutive 212 factors are possible.
 
 ### Sharp repayment phase gate
 
@@ -121,7 +122,7 @@ Inside the fixed first candidate the full correction product obeys
 
 P_n <= P_bar = 3N0/(3N0-k),
 
-and
+with
 
 epsilon=log_2(P_bar) < 1/60,000,000,000.
 
@@ -132,8 +133,6 @@ theta_n={n log_2 3} > 1-epsilon.
 Denjoy--Koksma over the full candidate gives at most five such phases in all 72,057,431,991 steps.
 
 Therefore there are at most five odd-height r=2 direct repayments globally. In particular, genuine 212/113 three-step excursions occur at most five times in the entire first-candidate prefix.
-
-This supersedes the old 2.24% repayment gate.
 
 ### Translation-invariant 46-step low-complexity exclusion
 
@@ -159,12 +158,12 @@ Digests:
 - row SHA256: `bef8f2e5b0dd6f6881a648f52cbe14f991648ba9586100bfd438c9f48b688982`;
 - descent SHA256: `24eaa38073ec1139faf01b2cfa741b9de1ef1a7413fd035ed2634963347a6159`.
 
-Thus from **every** boundary contact of a surviving first-candidate orbit, within the next 46 odd steps one must either
+Thus from every boundary contact of a surviving first-candidate orbit, within the next 46 odd steps one must either
 
 1. reach h>=2, or
 2. make at least three new 0->1 upcrossings.
 
-This is the current strongest local bridge from the global boundary count to forced defect complexity.
+This result is independent of the retracted non-cheap counting argument.
 
 ### Final repayment near the endpoint
 
@@ -178,7 +177,21 @@ m >= 72057431947.
 
 Thus a survivor must continue returning to the critical boundary until the final 44 odd steps.
 
-## 3. Sampled mod-9 / prime-support structure
+## 3. Current computation in progress
+
+A stronger translated 46-step class has now been exhaustively checked in chunks locally:
+
+- defect restricted to h in {0,1};
+- at most three upcrossings;
+- no `h=1,r=2,a=3` heavy return inside the window.
+
+All 47 mechanical factors were checked with no counterexample among 12,024,283 scripts and 6,112,533 concrete candidate rows. The worst observed candidate falls below the frontier at odd step 276.
+
+This result is not yet the primary committed certificate until its chunkable source and aggregate note are added to the repository. If committed, it will imply that every 46-step boundary window containing no rare heavy return must either reach h>=2 or contain at least four upcrossings.
+
+Because the sharp phase gate allows at most five heavy-return events globally, only finitely many boundary windows can be contaminated by them.
+
+## 4. Sampled mod-9 / prime-support structure
 
 For consecutive sampled 2 mod 9 returns,
 
@@ -195,36 +208,37 @@ Committed consequences include:
 
 No contradiction has yet been extracted from this branch.
 
-## 4. Important cautions
+## 5. Important cautions
 
 1. Do not claim a Collatz proof from these certificates.
-2. Pure mechanical/Sturmian shadowing alone is insufficient; integer seeds can shadow finite critical scripts.
-3. Finite computation is useful only for a mathematically complete finite class.
-4. Generic multiplicative-order results do not automatically control orbit-generated primes.
-5. Keep exact certificate claims separate from heuristic density intuition.
+2. Do not promote a local factor adjacency cap to a global excursion-frequency bound unless boundary waiting is explicitly modeled.
+3. Pure mechanical/Sturmian shadowing alone is insufficient; integer seeds can shadow finite critical scripts.
+4. Finite computation is useful only for a mathematically complete finite class.
+5. Generic multiplicative-order results do not automatically control orbit-generated primes.
+6. Keep exact certificate claims separate from heuristic density intuition.
 
-## 5. Best next target
+## 6. Best next target
 
-Exploit the translated 46-step rule globally.
+First commit and independently reproducibly package the stronger no-heavy/three-upcrossing translated 46-step certificate.
 
-There are at least 1,215,566,748 boundary departures, while every boundary contact starts a 46-step window that must either reach h>=2 or contain at least three upcrossings.
+Then exploit it globally with a correct covering/charging argument that includes boundary waiting. The sharp phase gate gives at most five heavy returns, so almost every boundary-started 46-step window should obey the stronger local rule.
 
-The next task is a covering/charging lemma that controls overlap among these windows. A useful target is to prove that the huge family of boundary windows forces either
+The desired bridge is a rigorous lower bound on either
 
-- too many h>=2 occupation times for the correction budget, or
-- too many upcrossings/repayments for the sharp phase and excursion constraints.
+- occupation times with h>=2, or
+- upcrossing events,
 
-If a clean charging lemma cannot close branch A, the secondary route is to combine those forced excursion events with sampled prime turnover.
+with overlap counted explicitly rather than through excursion adjacency.
 
-## 6. Files to read first after context loss
+## 7. Files to read first after context loss
 
 1. `CURRENT_STATUS.md`
-2. `notes/2026-10-01-translated-unit-excursion-certificate.md`
-3. `src/translated_unit_excursion_cert.py`
-4. `notes/2026-10-01-sharp-repayment-phase-gate.md`
-5. `src/pair_constrained_boundary_density_cert.py`
-6. `notes/2026-10-01-boundary-run-29.md`
-7. `notes/2026-10-01-three-step-factor-repeat-caps.md`
+2. `notes/2026-10-01-erratum-cheap-excursion-global-count.md`
+3. `notes/2026-10-01-translated-unit-excursion-certificate.md`
+4. `src/translated_unit_excursion_cert.py`
+5. `notes/2026-10-01-sharp-repayment-phase-gate.md`
+6. `src/pair_constrained_boundary_density_cert.py`
+7. `notes/2026-10-01-boundary-run-29.md`
 8. `notes/2026-10-01-last-boundary-within-44.md`
 9. `notes/2026-10-01-prime-turnover-clock.md`
 
