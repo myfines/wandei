@@ -8,245 +8,224 @@ This is the compact recovery point for future chats/agents. The repository conta
 
 Use the odd-only Syracuse map
 
-\[
-S(x)=\frac{3x+1}{2^{v_2(3x+1)}}.
-\]
+S(x)=(3x+1)/2^a,  a=v2(3x+1).
 
-Assume for contradiction that a least positive counterexample `N` exists. Write
+Assume for contradiction that a least positive counterexample N exists. Write
 
-\[
-a_j=v_2(3x_j+1),\qquad A_k=\sum_{j<k}a_j,
-\]
+A_k=sum_{j<k} a_j,
 
-\[
-h_k=\lfloor k\log_2 3\rfloor-A_k,
-\]
+h_k=floor(k log_2 3)-A_k,
 
-and
-
-\[
-r_k=\lfloor(k+1)\log_2 3\rfloor-\lfloor k\log_2 3\rfloor\in\{1,2\}.
-\]
+r_k=floor((k+1)log_2 3)-floor(k log_2 3) in {1,2}.
 
 Then exactly
 
-\[
-\boxed{h_{k+1}=h_k+r_k-a_k.}
-\]
+h_{k+1}=h_k+r_k-a_k.
 
 Two branches remain.
 
 ### A. First coefficient-contraction branch
 
-Continued-fraction / Denjoy--Koksma analysis isolates the first relevant candidate
+The first relevant continued-fraction candidate is
 
-\[
 (k,A_k)=(72057431991,114208327604).
-\]
 
-The clean certified seed window is
+The certified seed window is
 
-\[
-\boxed{2075\cdot2^{60}\le N<\frac43\,2^{71}.}
-\]
+2075*2^60 <= N < (4/3)*2^71,
 
-A sharper numerical ceiling is about `2^71.413083842`.
-
-The correction-defect budget forces more than `35.3028761%` of the `j<k` times to lie exactly on the critical boundary `h_j=0`.
+with a sharper ceiling about 2^71.413083842.
 
 ### B. Escape branch
 
-If the coefficient never contracts, `h_k>=0` for all `k`. For a genuinely divergent orbit, the reciprocal/correction argument gives
+If the coefficient never contracts, h_k>=0 for all k. For a genuinely divergent orbit the current reciprocal/correction argument gives
 
-\[
-\boxed{h_k\to+\infty,\qquad \sum_k2^{-h_k}<\infty.}
-\]
+h_k -> +infinity,
 
-The remaining issue is arithmetic realizability of such a path by one positive integer seed.
+sum_k 2^(-h_k) < infinity.
 
-## 2. Latest exact progress in branch A
+Arithmetic realizability remains open.
 
-### First 46 steps: low-complexity exclusion
+## 2. Strongest exact progress in branch A
 
-The pure 46-step mechanical prefix has `A_46=72` and fixes
+### Pair-constrained weighted boundary density
 
-\[
-N=4697939311072332635131,
-\]
+`src/pair_constrained_boundary_density_cert.py` combines the exact correction budget, rotation weights, Denjoy--Koksma, and the forced closure rule at r=1 boundary states.
 
-which lies above the first-candidate window.
+It certifies
 
-`src/unit_excursion_cert.py` exhausts the first-46 defect paths with `h in {0,1}` and at most two `0->1` upcrossings:
+z=#{0<=j<k : h_j=0} >= 35,251,435,711.
 
-- exactly one upcrossing: `609` scripts;
-- exactly two: `56,405` scripts;
-- total nontrivial class: `57,014` scripts;
-- exact seed-window survivors: `4,872` integers;
-- all descend below themselves, latest at odd-only step `145`.
+This supersedes the older 25,438,346,005 / 35.3% boundary count.
 
-Thus a survivor must, within the first 46 odd steps, either reach `h>=2` or make at least three unit upcrossings.
+### Boundary-run cap: 29 states
 
-Candidate-row digest:
+The chunked length-29 finite certificate checks all 30 mechanical factors and all exact local seed lifts in
 
-`b9dcfee89ca967a162e9d0e7a18e8ce49ccad111b665d3fa765e714ff8989b05`
+2075*2^60 <= x < 2^73.
 
-### Final boundary repayment lies in the last 44 odd steps
+Aggregate exact scan:
 
-Let `m` be the last return to `h=0` before the terminal crossing `h_k=-1` and put `ell=k-m`.
+- local candidate states: 1,553,424,384;
+- every candidate falls below the verified frontier;
+- latest drop: odd step 341;
+- worst local seed: 8522726957776383649659.
 
-`src/last_boundary_44_cert.py` plus the exact terminal-cylinder analysis excludes every `ell>=45`. Therefore
+Therefore no first-candidate prefix can contain 30 consecutive boundary states. Every maximal boundary run has at most 29 states.
 
-\[
-\boxed{k-m\le44},
-\qquad
-\boxed{m\ge72057431947}.
-\]
+Combining with the boundary count:
 
-So any first-candidate survivor creates positive defect near the beginning but makes its final repayment to the critical boundary only in the last 44 odd-only steps.
+- boundary runs >= 1,215,566,749;
+- unit departures h=0->1 >= 1,215,566,748.
 
-### Global boundary-run exclusion: current strongest finite certificate
+Every departure is forced to satisfy r=2,a=1.
 
-At every boundary time `h_j=0`, the exact product identity gives
+### Cheap/non-cheap excursion structure
 
-\[
-\frac{x_j}{N}
-=
-\frac{3^j}{2^{A_j}}
-\prod_{i<j}\left(1+\frac1{3x_i}\right),
-\]
+A cheapest immediate excursion is
 
-hence throughout the first candidate
+h: 0->1->0,
 
-\[
-\boxed{x_j<3N<2^{73}.}
-\]
+mechanical letters 21,
 
-The current `src/boundary_run_cert.py` excludes a run of 35 consecutive mechanical transitions on the boundary, equivalently it excludes 36 consecutive boundary states.
+valuations 12.
 
-It enumerates all `36` length-35 mechanical factors and all exact local seed lifts in
+The exact rotation lemma proves at most three such cheap excursions can occur consecutively.
 
-\[
-2075\cdot2^{60}\le x_j<2^{73}.
-\]
+Hence at least
 
-Exact counts/results:
+303,891,687
 
-- local candidate states: `2,691,480`;
-- all fall below the verified frontier;
-- latest drop: odd-only step `252`;
-- worst local seed: `4683730498974184172651`;
-- certificate digest: `a8f4322128bd42e4db3111c8073b7fed59a8b0cf28102988372fb9d08f8cc86b`.
+excursions are non-cheap.
 
-Therefore
+Heavy two-step returns are impossible, so every non-cheap excursion has length at least 3.
 
-\[
-\boxed{\text{no first-candidate prefix contains 36 consecutive boundary states}.}
-\]
+### Three-step classification
 
-Every maximal boundary run has at most `35` states.
+Every length-three mechanical departure word is exactly 212 or 221.
 
-The boundary-density lower bound gives
+The valuation patterns are:
 
-\[
-z=\#\{0\le j<k:h_j=0\}\ge25438346005.
-\]
+- 212: only 113;
+- 221: either 113 or 122.
 
-Therefore there are at least
+Rotation repetition caps:
 
-\[
-\left\lceil\frac z{35}\right\rceil=726809886
-\]
+- (221)^2 is impossible;
+- (212)^3 is impossible;
+- two consecutive 212 factors are possible.
 
-separate boundary runs, and at least
+### Sharp repayment phase gate
 
-\[
-\boxed{726809885}
-\]
+Inside the fixed first candidate the full correction product obeys
 
-unit departures `h=0 -> 1`. Every such departure is forced to satisfy
+P_n <= P_bar = 3N0/(3N0-k),
 
-\[
-\boxed{r_j=2,\qquad a_j=1.}
-\]
+and
 
-### Height-one heavy-return phase gate
+epsilon=log_2(P_bar) < 1/60,000,000,000.
 
-If `h_n=1` and `a_n>=3`, the side-branch altitude lemma gives `x_n>4N`, while the correction product satisfies `<65/64`. Hence
+If h_n is positive odd, r_n=2, and one step repays the whole defect to zero, then necessarily
 
-\[
-\boxed{\theta_n=\{n\log_2 3\}>\log_2(128/65)=0.9776321869\ldots}
-\]
+theta_n={n log_2 3} > 1-epsilon.
 
-is necessary.
+Denjoy--Koksma over the full candidate gives at most five such phases in all 72,057,431,991 steps.
 
-Thus a drop `h=1 -> 0` at an `r_n=2` location (which requires `a_n=3`) is possible only in the top roughly `2.24%` of the rotation phase circle. Outside that window, a height-one repayment can occur only at `r_n=1` via `a_n=2`.
+Therefore there are at most five odd-height r=2 direct repayments globally. In particular, genuine 212/113 three-step excursions occur at most five times in the entire first-candidate prefix.
+
+This supersedes the old 2.24% repayment gate.
+
+### Translation-invariant 46-step low-complexity exclusion
+
+`src/translated_unit_excursion_cert.py` generalizes the old phase-zero 46-step certificate to **every** boundary phase.
+
+For any boundary time m with h_m=0, suppose the next 46 odd steps stay in h in {0,1} and make at most two upcrossings 0->1. The certificate enumerates the complete finite class:
+
+- all 47 length-46 mechanical factors;
+- 2,896,739 exact low-complexity scripts (including pure mechanical scripts);
+- 1,289,079 concrete candidate rows in [2075*2^60,2^73);
+- 1,141,211 distinct local seeds.
+
+Every candidate row realizes its prescribed valuation prefix, and every distinct local seed falls below the verified frontier. Latest fall: odd step 237, from
+
+4810798976564215475307
+
+to
+
+1869158857707769661911 < 2075*2^60.
+
+Digests:
+
+- row SHA256: `bef8f2e5b0dd6f6881a648f52cbe14f991648ba9586100bfd438c9f48b688982`;
+- descent SHA256: `24eaa38073ec1139faf01b2cfa741b9de1ef1a7413fd035ed2634963347a6159`.
+
+Thus from **every** boundary contact of a surviving first-candidate orbit, within the next 46 odd steps one must either
+
+1. reach h>=2, or
+2. make at least three new 0->1 upcrossings.
+
+This is the current strongest local bridge from the global boundary count to forced defect complexity.
+
+### Final repayment near the endpoint
+
+Let m be the last return to h=0 before terminal h_k=-1. The exact terminal-cylinder certificate gives
+
+k-m <= 44,
+
+so
+
+m >= 72057431947.
+
+Thus a survivor must continue returning to the critical boundary until the final 44 odd steps.
 
 ## 3. Sampled mod-9 / prime-support structure
 
-For consecutive sampled `2 mod 9` returns,
+For consecutive sampled 2 mod 9 returns,
 
-\[
-3^{q_j}s_j+\eta_{j+1}=2^{t_{j+1}}s_{j+1},
-\qquad \eta_j\in\{3,15,63\}.
-\]
+3^{q_j}s_j + eta_{j+1} = 2^{t_{j+1}} s_{j+1},
 
-Committed exact consequences:
+eta_j in {3,15,63}.
 
-- `gcd(s_j,s_{j+1}) | eta_{j+1}`, so primes `p>7` cannot divide consecutive cofactors;
-- two-step recycling forces a discrete-log / multiplicative-order congruence for `3/2 mod p`;
-- if sampled odd-run lengths `q_j` are bounded, `P`-smooth cofactors have density zero for every fixed `P` (S-unit finiteness);
-- hence an escape tail has a dichotomy: unbounded spikes, or density-one refresh by increasingly large prime factors.
+Committed consequences include:
 
-No contradiction has yet been extracted from this structure.
+- gcd(s_j,s_{j+1}) divides eta_{j+1}; primes p>7 cannot divide consecutive cofactors;
+- two-step recycling forces a discrete-log / multiplicative-order clock for 3/2 mod p;
+- bounded sampled odd-run lengths imply fixed-P smooth cofactors have density zero;
+- an escape tail therefore faces an unbounded-spike / density-one prime-refresh dichotomy.
 
-## 4. Important dead ends / cautions
+No contradiction has yet been extracted from this branch.
 
-Do not restart these as if untested:
+## 4. Important cautions
 
-1. A universal local exponential lower bound on endpoint residues is false; global least-counterexample minimality must be included.
-2. Pure mechanical/Sturmian shadowing alone is insufficient; positive integers can shadow critical 2-adic scripts for long finite times.
-3. Generic multiplicative-order theorems do not automatically control orbit-generated primes, which could concentrate on exceptional small-order sets.
-4. Finite computation is useful only when attached to a mathematically complete finite class/certificate.
-5. Reciprocal summability in the escape branch is a derived consequence of a quantitative Garcia--Tal orbit-sparsity estimate, not merely of “Banach density zero”; preserve that distinction.
+1. Do not claim a Collatz proof from these certificates.
+2. Pure mechanical/Sturmian shadowing alone is insufficient; integer seeds can shadow finite critical scripts.
+3. Finite computation is useful only for a mathematically complete finite class.
+4. Generic multiplicative-order results do not automatically control orbit-generated primes.
+5. Keep exact certificate claims separate from heuristic density intuition.
 
-## 5. Best next targets
+## 5. Best next target
 
-### Main first-candidate target: excursion-return automaton
+Exploit the translated 46-step rule globally.
 
-A survivor now requires more than `7.26e8` boundary departures. The next target is to classify the compensating returns by height and mechanical phase.
+There are at least 1,215,566,748 boundary departures, while every boundary contact starts a 46-step window that must either reach h>=2 or contain at least three upcrossings.
 
-The immediate quantitative question is whether the rotation supplies enough admissible repayment phases once heavy repayments are restricted by altitude. A useful finite-state model should track at least
+The next task is a covering/charging lemma that controls overlap among these windows. A useful target is to prove that the huge family of boundary windows forces either
 
-- defect height `h`;
-- mechanical letter `r in {1,2}`;
-- phase window membership for heavy repayment;
-- exact valuation excess `a-r`.
+- too many h>=2 occupation times for the correction budget, or
+- too many upcrossings/repayments for the sharp phase and excursion constraints.
 
-The goal is to turn the huge excursion count into a contradiction with the available phase/altitude budget, before invoking the more complicated sampled prime-turnover machinery.
-
-### Secondary arithmetic bridge
-
-If the phase/altitude budget alone is insufficient, combine forced excursions with sampled mod-9 turnover:
-
-- departures force `a=1` at definite phases;
-- returns require compensating excess valuation;
-- primes `p>7` cannot persist in adjacent sampled cofactors;
-- recycled primes obey multiplicative-order clocks for `3/2 mod p`.
-
-### Escape branch
-
-The missing theorem remains a bad-prime-concentration exclusion compatible with `h_k->infinity` and `sum 2^{-h_k}<infinity`.
+If a clean charging lemma cannot close branch A, the secondary route is to combine those forced excursion events with sampled prime turnover.
 
 ## 6. Files to read first after context loss
 
 1. `CURRENT_STATUS.md`
-2. `notes/2026-10-01-boundary-run-exclusion.md`
-3. `notes/2026-10-01-last-boundary-within-44.md`
-4. `notes/2026-10-01-height-one-heavy-step-phase-gate.md`
-5. `notes/2026-10-01-critical-defect-budget.md`
-6. `notes/2026-10-01-unit-excursion-certificate.md`
-7. `notes/2026-10-01-prime-turnover-clock.md`
-8. `notes/2026-09-29-first-contraction-certificate.md`
-9. `notes/2026-09-29-critical-defect-coordinate.md`
+2. `notes/2026-10-01-translated-unit-excursion-certificate.md`
+3. `src/translated_unit_excursion_cert.py`
+4. `notes/2026-10-01-sharp-repayment-phase-gate.md`
+5. `src/pair_constrained_boundary_density_cert.py`
+6. `notes/2026-10-01-boundary-run-29.md`
+7. `notes/2026-10-01-three-step-factor-repeat-caps.md`
+8. `notes/2026-10-01-last-boundary-within-44.md`
+9. `notes/2026-10-01-prime-turnover-clock.md`
 
 These reconstruct the current proof state without relying on chat history.
