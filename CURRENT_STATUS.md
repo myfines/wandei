@@ -54,144 +54,130 @@ Arithmetic realizability remains open.
 
 z=#{0<=j<k : h_j=0} >= 35,251,435,711.
 
-This supersedes the older 25,438,346,005 / 35.3% boundary count.
-
 ### Boundary-run cap: 29 states
 
-The chunked length-29 finite certificate checks all 30 mechanical factors and all exact local seed lifts in
+The chunked length-29 finite certificate checks all 30 mechanical factors and 1,553,424,384 exact local candidate states in
 
 2075*2^60 <= x < 2^73.
 
-Aggregate exact scan:
+Every candidate falls below the verified frontier; latest drop is odd step 341.
 
-- local candidate states: 1,553,424,384;
-- every candidate falls below the verified frontier;
-- latest drop: odd step 341;
-- worst local seed: 8522726957776383649659.
-
-Therefore no first-candidate prefix can contain 30 consecutive boundary states. Every maximal boundary run has at most 29 states.
-
-Combining with the boundary count gives
+Therefore every maximal boundary run has at most 29 states. Hence
 
 - boundary runs >= 1,215,566,749;
-- actual departures h=0->1 >= 1,215,566,748.
+- departures h=0->1 >= 1,215,566,748;
+- every departure has r=2,a=1.
 
-Every departure is forced to satisfy r=2,a=1.
+### IMPORTANT ERRATUM
 
-### IMPORTANT ERRATUM: no global one-quarter non-cheap count
+The local factor `(21)^4` is impossible, so at most three cheap `21 / a=12` excursions can occur **immediately back-to-back with no boundary waiting**.
 
-A cheap immediate excursion is
+This does not imply that one quarter of all excursions globally are non-cheap. Boundary waiting can occur between excursions. Therefore the old global lower bounds 181,702,471 and 303,891,687 non-cheap excursions are retracted.
 
-h: 0->1->0,
+See `notes/2026-10-01-erratum-cheap-excursion-global-count.md`.
 
-mechanical letters 21,
+### Three-step local structure
 
-valuations 12.
+Every length-three mechanical departure word is 212 or 221.
 
-The exact rotation lemma proves `(21)^4` is impossible, so at most three cheap excursions can occur **immediately back-to-back with no boundary waiting transitions**.
+- 212 has valuation pattern 113;
+- 221 has valuation pattern 113 or 122.
 
-It does **not** follow that one out of every four excursions in the global excursion sequence is non-cheap, because after a return the orbit may remain at h=0 for several mechanical transitions before the next departure.
+Adjacency-only rotation caps:
 
-Therefore the previously quoted global lower bounds
-
-- 181,702,471 non-cheap excursions, and
-- 303,891,687 non-cheap excursions
-
-are retracted. See `notes/2026-10-01-erratum-cheap-excursion-global-count.md`.
-
-The 29-state run cap and 1,215,566,748 departure lower bound remain valid.
-
-### Three-step local classification
-
-Every length-three mechanical departure word is exactly 212 or 221.
-
-The valuation patterns are:
-
-- 212: only 113;
-- 221: either 113 or 122.
-
-The local rotation repetition caps are also adjacency statements only:
-
-- `(221)^2` is impossible;
-- `(212)^3` is impossible;
-- two immediately consecutive 212 factors are possible.
+- `(221)^2` impossible;
+- `(212)^3` impossible;
+- two adjacent 212 factors possible.
 
 ### Sharp repayment phase gate
 
-Inside the fixed first candidate the full correction product obeys
-
-P_n <= P_bar = 3N0/(3N0-k),
-
-with
+Inside the fixed first candidate,
 
 epsilon=log_2(P_bar) < 1/60,000,000,000.
 
-If h_n is positive odd, r_n=2, and one step repays the whole defect to zero, then necessarily
+Every positive odd-height direct repayment at r=2 requires
 
 theta_n={n log_2 3} > 1-epsilon.
 
-Denjoy--Koksma over the full candidate gives at most five such phases in all 72,057,431,991 steps.
+Denjoy--Koksma gives at most five such events in the whole 72,057,431,991-step prefix.
 
-Therefore there are at most five odd-height r=2 direct repayments globally. In particular, genuine 212/113 three-step excursions occur at most five times in the entire first-candidate prefix.
+Thus there are at most five heavy `h=1,r=2,a=3` returns globally.
 
-### Translation-invariant 46-step low-complexity exclusion
+### Translation-invariant 46-step certificate: <=2 upcrossings
 
-`src/translated_unit_excursion_cert.py` generalizes the old phase-zero 46-step certificate to **every** boundary phase.
+`src/translated_unit_excursion_cert.py` covers every length-46 mechanical factor. Starting from any boundary time h=0, the class
 
-For any boundary time m with h_m=0, suppose the next 46 odd steps stay in h in {0,1} and make at most two upcrossings 0->1. The certificate enumerates the complete finite class:
+- h remains in {0,1};
+- at most two upcrossings;
 
-- all 47 length-46 mechanical factors;
-- 2,896,739 exact low-complexity scripts (including pure mechanical scripts);
-- 1,289,079 concrete candidate rows in [2075*2^60,2^73);
-- 1,141,211 distinct local seeds.
+is completely excluded.
 
-Every candidate row realizes its prescribed valuation prefix, and every distinct local seed falls below the verified frontier. Latest fall: odd step 237, from
+Exact scan:
 
-4810798976564215475307
+- 47 factors;
+- 2,896,739 scripts;
+- 1,289,079 candidate rows;
+- 1,141,211 distinct local seeds;
+- latest drop below the frontier: odd step 237.
 
-to
+Therefore every surviving boundary-started 46-step window must reach h>=2 or contain at least three upcrossings.
 
-1869158857707769661911 < 2075*2^60.
+### Strong translated 46-step certificate: <=3 upcrossings with no heavy return
 
-Digests:
+`src/translated_noheavy_three_upcross_cert.py` strengthens the local class by allowing up to three upcrossings while excluding the rare heavy return `h=1,r=2,a=3`.
 
-- row SHA256: `bef8f2e5b0dd6f6881a648f52cbe14f991648ba9586100bfd438c9f48b688982`;
-- descent SHA256: `24eaa38073ec1139faf01b2cfa741b9de1ef1a7413fd035ed2634963347a6159`.
+All 47 factors were exhaustively checked in chunks:
 
-Thus from every boundary contact of a surviving first-candidate orbit, within the next 46 odd steps one must either
+- scripts: 12,024,283;
+- concrete candidate rows: 6,112,533;
+- every candidate realizes its exact prefix;
+- every candidate falls below the verified frontier;
+- latest drop: odd step 276;
+- worst local seed: 8171827952796853273339;
+- endpoint: 697521228196614030223.
+
+Hence every complete 46-step boundary window containing no heavy return must either
 
 1. reach h>=2, or
-2. make at least three new 0->1 upcrossings.
+2. contain at least four upcrossings.
 
-This result is independent of the retracted non-cheap counting argument.
+### Global covering charge
+
+At most five heavy returns contaminate at most 5*46=230 boundary-started 46-step windows. At most 45 additional boundary times are too close to the terminal index to start a complete window.
+
+Thus at least
+
+W >= 35,251,435,711 - 230 - 45 = 35,251,435,436
+
+clean complete boundary windows obey the strong translated rule.
+
+Let
+
+H=#{0<=t<k : h_t>=2},
+
+U=# {0<=j<k : h_j=0,h_{j+1}=1}.
+
+A fixed high state belongs to at most 46 windows; a fixed upcrossing belongs to at most 46 windows. Therefore
+
+W <= 46H + (46/4)U.
+
+Equivalently,
+
+boxed: 4H + U >= 3,065,342,212.
+
+See `notes/2026-10-01-noheavy-three-upcross-covering.md`.
+
+This bound explicitly allows boundary waiting and is independent of the retracted non-cheap frequency argument.
 
 ### Final repayment near the endpoint
 
 Let m be the last return to h=0 before terminal h_k=-1. The exact terminal-cylinder certificate gives
 
-k-m <= 44,
+k-m <=44,
 
-so
+so m>=72057431947.
 
-m >= 72057431947.
-
-Thus a survivor must continue returning to the critical boundary until the final 44 odd steps.
-
-## 3. Current computation in progress
-
-A stronger translated 46-step class has now been exhaustively checked in chunks locally:
-
-- defect restricted to h in {0,1};
-- at most three upcrossings;
-- no `h=1,r=2,a=3` heavy return inside the window.
-
-All 47 mechanical factors were checked with no counterexample among 12,024,283 scripts and 6,112,533 concrete candidate rows. The worst observed candidate falls below the frontier at odd step 276.
-
-This result is not yet the primary committed certificate until its chunkable source and aggregate note are added to the repository. If committed, it will imply that every 46-step boundary window containing no rare heavy return must either reach h>=2 or contain at least four upcrossings.
-
-Because the sharp phase gate allows at most five heavy-return events globally, only finitely many boundary windows can be contaminated by them.
-
-## 4. Sampled mod-9 / prime-support structure
+## 3. Sampled mod-9 / prime-support structure
 
 For consecutive sampled 2 mod 9 returns,
 
@@ -204,42 +190,42 @@ Committed consequences include:
 - gcd(s_j,s_{j+1}) divides eta_{j+1}; primes p>7 cannot divide consecutive cofactors;
 - two-step recycling forces a discrete-log / multiplicative-order clock for 3/2 mod p;
 - bounded sampled odd-run lengths imply fixed-P smooth cofactors have density zero;
-- an escape tail therefore faces an unbounded-spike / density-one prime-refresh dichotomy.
+- an escape tail faces an unbounded-spike / density-one prime-refresh dichotomy.
 
 No contradiction has yet been extracted from this branch.
 
-## 5. Important cautions
+## 4. Important cautions
 
 1. Do not claim a Collatz proof from these certificates.
-2. Do not promote a local factor adjacency cap to a global excursion-frequency bound unless boundary waiting is explicitly modeled.
-3. Pure mechanical/Sturmian shadowing alone is insufficient; integer seeds can shadow finite critical scripts.
+2. Do not promote local factor adjacency caps to global excursion-frequency bounds without explicitly modeling boundary waiting.
+3. Pure mechanical/Sturmian shadowing alone is insufficient.
 4. Finite computation is useful only for a mathematically complete finite class.
 5. Generic multiplicative-order results do not automatically control orbit-generated primes.
 6. Keep exact certificate claims separate from heuristic density intuition.
 
-## 6. Best next target
+## 5. Best next target
 
-First commit and independently reproducibly package the stronger no-heavy/three-upcrossing translated 46-step certificate.
+Attack the new exact lower charge
 
-Then exploit it globally with a correct covering/charging argument that includes boundary waiting. The sharp phase gate gives at most five heavy returns, so almost every boundary-started 46-step window should obey the stronger local rule.
+4H+U >= 3,065,342,212
 
-The desired bridge is a rigorous lower bound on either
+from the other side using the correction budget and rotation weights.
 
-- occupation times with h>=2, or
-- upcrossing events,
+Every upcrossing forces a successor h=1 state, while every h>=2 state contributes at most one quarter of its mechanical correction weight. The next useful object is a phase-weighted Lagrange/finite-state optimization that gives an upper bound on 4H+U compatible with survival.
 
-with overlap counted explicitly rather than through excursion adjacency.
+If that is too weak, enrich the charge with local phase classes rather than returning to the invalid cheap-excursion counting shortcut.
 
-## 7. Files to read first after context loss
+## 6. Files to read first after context loss
 
 1. `CURRENT_STATUS.md`
 2. `notes/2026-10-01-erratum-cheap-excursion-global-count.md`
-3. `notes/2026-10-01-translated-unit-excursion-certificate.md`
-4. `src/translated_unit_excursion_cert.py`
-5. `notes/2026-10-01-sharp-repayment-phase-gate.md`
-6. `src/pair_constrained_boundary_density_cert.py`
-7. `notes/2026-10-01-boundary-run-29.md`
-8. `notes/2026-10-01-last-boundary-within-44.md`
-9. `notes/2026-10-01-prime-turnover-clock.md`
+3. `notes/2026-10-01-noheavy-three-upcross-covering.md`
+4. `src/translated_noheavy_three_upcross_cert.py`
+5. `notes/2026-10-01-translated-unit-excursion-certificate.md`
+6. `src/translated_unit_excursion_cert.py`
+7. `notes/2026-10-01-sharp-repayment-phase-gate.md`
+8. `src/pair_constrained_boundary_density_cert.py`
+9. `notes/2026-10-01-boundary-run-29.md`
+10. `notes/2026-10-01-last-boundary-within-44.md`
 
 These reconstruct the current proof state without relying on chat history.
