@@ -38,10 +38,10 @@ Hence the number of unit departures h=0->1 is at least
 
 1,215,566,748.
 
-At most three cheap immediate excursions can occur consecutively, so at least
+Every such departure is forced by the defect recurrence to have
 
-floor(1,215,566,748 / 4) = 303,891,687
+r=2, a=1.
 
-excursions are non-cheap. Since heavy immediate two-step returns are impossible, all of these non-cheap excursions have length at least three.
+These boundary-run and departure counts are exact consequences of the certificate.
 
-This is the current strongest exact boundary-run and excursion count in branch A.
+An earlier version of this note additionally claimed that at least one quarter of all excursions are non-cheap by using the local `(21)^4` exclusion. That global inference is retracted: boundary waiting transitions may occur between successive excursions, so excursion adjacency does not imply adjacent `21` factors. See `notes/2026-10-01-erratum-cheap-excursion-global-count.md`.
