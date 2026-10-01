@@ -1,4 +1,4 @@
-# Five-U-or-V covering inequality
+# Five-charge covering inequality
 
 Status: exact consequence inside the first coefficient-contraction branch. Not a Collatz proof.
 
@@ -17,14 +17,22 @@ V = #{j : h_j=1, h_{j+1}=2}.
 
 ## Local dichotomy
 
-The translated no-heavy three-upcross certificate already proves that if a clean 46-step window stays in {0,1}, it must contain at least four U transitions.
+The translated no-heavy three-upcross certificate proves that if a clean 46-step window stays in {0,1}, it contains at least four U transitions.
 
-The newer exact certificate `src/translated_h1_exact_four_u_cert.cpp` excludes the remaining clean low-height class with exactly four U transitions.
+The exact certificate `src/translated_h1_exact_four_u_cert.cpp` excludes the remaining clean low-height class with exactly four U transitions.
 
-Therefore every clean 46-step boundary-started window satisfies one of:
+Therefore a clean low window contains at least five U transitions.
 
-1. it enters h>=2, hence contains at least one V transition; or
-2. it stays in {0,1}, in which case it contains at least five U transitions.
+If a clean window enters h>=2, then before its first V:1->2 transition it must first leave the initial boundary h=0 through a U:0->1 transition. Upward defect jumps have size at most one, so this is unavoidable.
+
+Thus every clean 46-step window satisfies the stronger score inequality
+
+#U(window) + 4 #V(window) >= 5.
+
+Indeed:
+
+- low window: #U>=5;
+- high window: #U>=1 and #V>=1.
 
 ## Sharpened overlap counts
 
@@ -36,25 +44,35 @@ A fixed V transition has source state h=1, so its own source time is not a bound
 
 Thus a fixed V belongs to at most 44 boundary-started 46-step windows.
 
-Partition the W clean windows into high windows and low windows. Then
+Summing the local score over all W clean windows therefore gives
 
-W_high <= 44 V,
-5 W_low <= 45 U,
+5W <= 45 U + 4*44 V
+   = 45 U + 176 V.
 
-so
+Using W >= 35,251,435,436,
 
-W = W_high + W_low <= 44 V + 9 U.
+boxed: 45 U + 176 V >= 176,257,177,180.
 
-Using W >= 35,251,435,436 gives the exact global charge
+Since
 
-boxed: 44 V + 9 U >= 35,251,435,436.
+45(U+4V) = 45U+180V >= 45U+176V,
 
-A simpler consequence follows because
+we obtain the cleaner global consequence
 
-44V+9U <= 9(5V+U):
+boxed: U + 4 V >= ceil(5W/45)
+                 = ceil(W/9)
+                 = 3,916,826,160.
 
-boxed: 5 V + U >= ceil(35,251,435,436/9) = 3,916,826,160.
+This supersedes the earlier 41-step bound
+
+U+4V >= 3,439,164,436.
+
+For reference, the weaker partition-only argument also gives
+
+44V + 9U >= W,
+
+but the five-charge inequality above is the stronger useful formulation because every high window necessarily contains both its first U and its first V.
 
 Both U and V have the exact local arithmetic form r=2,a=1; only the incoming defect height differs.
 
-This strengthens the previous low-height covering information and is independent of the retracted cheap-excursion frequency argument.
+The result is independent of the retracted cheap-excursion frequency argument.
