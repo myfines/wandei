@@ -1,29 +1,24 @@
-# Forced non-cheap excursion count
+# Forced non-cheap excursion count — RETRACTED
 
-Status: exact combinatorial consequence of the certified excursion lower bound and cheap-run cap. Not a Collatz proof.
+Status: **retracted as a global counting argument**. See `notes/2026-10-01-erratum-cheap-excursion-global-count.md`.
 
-The first-candidate defect budget and boundary-run certificate force at least E = 726809885 boundary excursions.
+The local lemma used here remains correct: the mechanical factor `(21)^4` is impossible, so at most three cheap `21 / a=12` excursions can occur **immediately back-to-back with no intervening boundary waiting transitions**.
 
-The rotation lemma proves that at most three cheap two-step excursions can occur consecutively. Therefore, in any sequence of E excursions with no run of four cheap excursions, the number Q of non-cheap excursions satisfies
+The error was to promote that local adjacency statement to the global excursion sequence. After returning to `h=0`, the orbit may remain on the boundary for one or more mechanical transitions before the next departure. Those waiting transitions change the phase, so successive excursions need not correspond to adjacent `21` factors.
 
-Q >= floor(E/4) = 181702471.
+Therefore the inference
 
-Hence a first-candidate survivor requires at least 181702471 non-cheap excursions.
+`E excursions => at least floor(E/4) non-cheap excursions`
 
-Every excursion leaves the boundary through 0->1, necessarily with r=2 and a=1. If it returns immediately on the next step, then h=1 must go to 0, so a=1+r.
+is invalid in general.
 
-If the next mechanical symbol is r=1, then a=2 and the excursion is exactly the cheap 21 / a=12 type already counted.
+The previously stated lower bound `181702471` is withdrawn, as is any later numerical non-cheap lower bound obtained from the same step.
 
-If a non-cheap excursion nevertheless returns in two steps, the next symbol must therefore be r=2 and a=3. This is an odd-height direct repayment at an r=2 phase, so the direct-repayment phase gate applies:
+Independent statements about individual excursions remain usable, including:
 
-theta > log2(128/65) = 0.9776321869...
+- every departure `0->1` has `r=2,a=1`;
+- a two-step heavy `22 / a=13` immediate return is impossible;
+- a three-step excursion has mechanical type `212` or `221`;
+- sharp odd-height `r=2` direct repayments are globally limited to at most five in the first candidate.
 
-Otherwise the non-cheap excursion cannot return in two steps and has length at least 3.
-
-Thus at least 181702471 forced interruptions obey the dichotomy:
-
-(A) a two-step heavy return 0->1->0 of mechanical type 22 and valuation type 13, confined to the top roughly 2.24 percent phase window; or
-
-(B) an excursion of length at least 3.
-
-This is the first deterministic bridge between the cheap-run cap and the heavy-repayment phase gate. The next target is to bound how many type-A interruptions can occur in the rotation word; the remainder are then forced to be length at least 3 and can be charged against the global defect/correction budget.
+Any future global frequency argument must model boundary waiting explicitly.
