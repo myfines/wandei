@@ -60,65 +60,77 @@ boundary-started windows are both complete and free of heavy returns.
 
 Every one of these `W` clean windows must obey the stronger local dichotomy above.
 
-## 3. Direct overlap count
+## 3. Stronger overlap count using entries into h>=2
 
-Let
+Define
 
-- `H = #{0<=t<k : h_t>=2}` be the number of high-defect occupation times;
-- `U = # {0<=j<k : h_j=0, h_{j+1}=1}` be the number of upcrossing transitions.
+- `U = # {0<=j<k : h_j=0, h_{j+1}=1}`;
+- `V = # {0<=j<k : h_j=1, h_{j+1}=2}`.
 
-Partition the `W` clean windows into two classes.
+A clean 46-step window begins at `h=0`. If it reaches any state with `h>=2`, then before its first such state it must contain a transition `1->2`. Therefore high windows can be charged to **entry transitions** rather than all high-defect occupation times.
 
-### High windows
+A fixed transition belongs to at most 46 length-46 windows. Hence, if `W_V` denotes clean windows that reach `h>=2`,
 
-A high window contains at least one state with `h>=2`.
+`W_V <= 46 V`.
 
-One fixed high-defect state can lie in at most 46 length-46 windows. Hence
-
-`W_H <= 46 H`.
-
-### Low windows
-
-A clean window with no `h>=2` state must contain at least four upcrossings.
-
-Counting window/upcrossing incidences, every upcrossing can belong to at most 46 windows, so
+If a clean window never reaches `h>=2`, the finite certificate forces at least four `0->1` upcrossings. If `W_U` denotes these low windows, incidence counting gives
 
 `4 W_U <= 46 U`,
 
-hence
+so
 
 `W_U <= (46/4) U`.
 
-Adding the two classes gives
+Since `W=W_V+W_U`,
 
-`W <= 46 H + (46/4) U`.
+`W <= 46V + (46/4)U`.
 
 Equivalently,
 
-`92 H + 23 U >= 2 W`,
+`92V + 23U >= 2W`,
 
 and therefore
 
-`4 H + U >= ceil(2W/23)`.
+`boxed: 4V + U >= ceil(2W/23)`.
 
-Using the certified lower bound on `W`,
+Using `W>=35,251,435,436`,
 
-`ceil(2*35,251,435,436 / 23) = 3,065,342,212`.
+`boxed: 4V + U >= 3,065,342,212`.
 
-Thus every first-candidate survivor must satisfy the exact global charge inequality
+This strictly strengthens the earlier occupation-count version `4H+U>=3,065,342,212`, because every `1->2` entry contributes a high state but a long high excursion may contribute many high states.
 
-`boxed: 4 H + U >= 3,065,342,212`.
+## 4. Mechanical form of both charged events
 
-## 4. Why this is safer than the retracted excursion count
+The recurrence is
+
+`h_{j+1}=h_j+r_j-a_j`,
+
+with `r_j in {1,2}` and every valuation `a_j>=1`.
+
+For a `0->1` upcrossing, `r_j-a_j=1`, hence necessarily
+
+`r_j=2, a_j=1`.
+
+For a `1->2` entry, the same increment `+1` is required, so again necessarily
+
+`r_j=2, a_j=1`.
+
+Thus **every event counted by either U or V is the same local valuation event `r=2,a=1`; only the incoming defect height differs.** This makes the strengthened charge particularly suitable for a phase/continued-fraction counting argument.
+
+## 5. Why this is safe with boundary waiting
 
 This argument never assumes that successive excursions are mechanically adjacent. Boundary waiting transitions are allowed without restriction.
 
-The only overlap fact used is geometric and exact: a fixed state or transition belongs to at most 46 windows of length 46.
+The only overlap fact used is exact: a fixed transition belongs to at most 46 length-46 windows.
 
-So the new inequality is independent of the invalid inference from `(21)^4` to a global non-cheap fraction.
+So the new inequality is independent of the retracted inference from `(21)^4` to a global non-cheap fraction.
 
-## 5. Next target
+## 6. Next target
 
-The remaining task is to upper-bound the same charge `4H+U` (or a sharper weighted version) from the correction budget and rotation weights.
+The remaining task is to upper-bound the same charge `4V+U` from arithmetic/rotation structure.
 
-A promising route is to note that every upcrossing forces a successor state at `h=1`, while every `h>=2` state contributes at most one quarter of the mechanical correction weight. A phase-weighted Lagrange optimization analogous to `pair_constrained_boundary_density_cert.py` may therefore be able to turn the lower charge above into a contradiction.
+Both U and V occur only on `r=2,a=1` transitions. Candidate routes are:
+
+1. combine their required density with the exact irrational-rotation positions of `r=2`;
+2. use the fact that U has incoming height 0 and V incoming height 1 to charge their correction-weight losses differently;
+3. exploit continued-fraction shifts `q_U=6,586,818,670` and `q_L=65,470,613,321`, whose rotation errors are of order `10^-11`, to force close boundary pairs or repeated contracting blocks.
