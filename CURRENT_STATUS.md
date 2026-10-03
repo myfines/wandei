@@ -1,6 +1,6 @@
 # CURRENT STATUS — recovery checkpoint
 
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 This repository contains partial results and exact finite certificates only. There is **no claimed proof of Collatz**.
 
@@ -16,127 +16,69 @@ A_k=sum_{j<k} a_j,
 
 h_k=floor(k log_2 3)-A_k,
 
-r_k=floor((k+1)log_2 3)-floor(k log_2 3) in {1,2}.
+r_k=floor((k+1)log_2 3)-floor(k log_2 3) in {1,2},
 
-Then
+so
 
 h_{k+1}=h_k+r_k-a_k.
 
-### Branch A: first coefficient contraction
+Two branches arise.
+
+### Branch A: first coefficient contraction — CLOSED
 
 The first relevant candidate is
 
 (k,A_k)=(72057431991,114208327604),
 
-with certified seed window
+and the internal first-contraction analysis gives the rigorous coarse seed bound
 
-2075*2^60 <= N < (4/3)*2^71.
+N < (4/3)*2^71.
 
-### Branch B: escape
+A 2025 published theorem of Mohammad Ansari (*Recursive sufficiency for the Collatz conjecture and computational verification*, NNTDM 31(3), Proposition 3.2 and Remark 3.1) upgrades the verified frontier 2^71 to
 
-If the coefficient never contracts, h_k>=0 for all k. For a genuinely divergent orbit the current argument gives
+L = 4*3^44 + 2.
+
+`src/ansari_frontier_bridge_cert.py` checks exactly that
+
+2*3^44+1 < 2^71
+
+and
+
+(4/3)*2^71 < 4*3^44+2.
+
+Therefore every possible Branch-A seed lies below a published verified frontier, so no least counterexample can enter Branch A.
+
+See `notes/2026-10-03-branch-a-closed-by-recursive-sufficiency-frontier.md`.
+
+Audit note: Lemma 3.2 in the paper appears to omit the element 3 from the displayed parametrization of the infinite intersection; adding `{3}` repairs the statement and does not affect Proposition 3.2 or the gap `(N,2N]` used here. The recursive-set closure steps in Lemma 3.1 were checked and no obstruction to Proposition 3.2 was found.
+
+### Branch B: escape — OPEN
+
+If the coefficient never contracts, then
+
+h_k>=0 for all k.
+
+For a genuinely divergent orbit the current argument gives
 
 h_k -> +infinity,
 
 sum_k 2^(-h_k) < infinity.
 
-Arithmetic realizability remains open.
+Arithmetic realizability remains open. This is now the sole main branch.
 
-## 2. Strongest exact progress in branch A
+## 2. Historical Branch-A work retained in the repository
 
-### Weighted boundary density
+The following exact results remain useful as techniques and consistency checks, but they are no longer needed to close Branch A:
 
-`src/pair_constrained_boundary_density_cert.py` certifies
+- pair-constrained weighted boundary density;
+- boundary-run cap of 29 states;
+- sharp odd-height repayment phase gate;
+- translated 39/41/46-step finite certificates;
+- exact-four upstep pattern classifications;
+- convergent-cycle boundary adjacency and strict state drift;
+- terminal suffix rigidity.
 
-z=#{0<=j<k:h_j=0} >= 35,251,435,711.
-
-### Boundary-run cap
-
-The chunked length-29 certificate checks all 30 mechanical factors and 1,553,424,384 exact local states in the certified local state interval. Every candidate falls below the verified frontier.
-
-Therefore every maximal boundary run has at most 29 states.
-
-Consequences:
-
-- boundary runs >= 1,215,566,749;
-- departures h=0->1 >= 1,215,566,748;
-- every such departure has r=2,a=1.
-
-### Sharp odd-height repayment gate
-
-Inside the fixed first candidate,
-
-epsilon=log_2(P_bar) < 1/60,000,000,000.
-
-Every positive odd-height direct repayment at r=2 requires theta_n>1-epsilon. Denjoy--Koksma implies at most five such events in the whole first-candidate prefix.
-
-### Translated finite certificates
-
-The 46-step translated certificates cover all 47 mechanical factors. In particular:
-
-- `src/translated_noheavy_three_upcross_cert.py` excludes the clean low-height class with at most three U=0->1 upcrossings;
-- the targeted height-2/height-3 certificates exclude all clean windows with only three total upsteps;
-- `src/translated_h1_exact_four_u_cert.cpp` excludes the remaining clean low-height class with exactly four U transitions.
-
-Hence every clean complete boundary-started 46-step window satisfies:
-
-1. if it stays in h<=1, it contains at least five U transitions;
-2. if it reaches h>=2, it necessarily contains at least one U followed later by at least one V=1->2 transition.
-
-At most five rare heavy returns contaminate at most 230 starts, and at most 45 starts are terminally incomplete. Therefore
-
-W >= 35,251,435,436
-
-clean 46-step boundary windows remain.
-
-Using the 29-state boundary-run cap:
-
-- a fixed U can lie in at most 45 boundary-started 46-windows;
-- a fixed V can lie in at most 44 such windows.
-
-Charging each low window by five U's and each high window by one U plus one V gives
-
-5W <= 45U + 176V <= 45(U+4V).
-
-Therefore
-
-boxed: U + 4V >= 3,916,826,160.
-
-See `notes/2026-10-02-five-u-or-v-covering.md`.
-
-This supersedes the older 4V+U >= 3,133,460,928 bound as the strongest simple U/V charge currently recorded.
-
-### Total upstep count
-
-Independent targeted certificates also imply every clean 46-step window contains at least four total defect upsteps. Thus, with overlap control,
-
-G=#{j:h_{j+1}=h_j+1} >= 3,133,460,928.
-
-Every upstep has exact local form r=2,a=1. Since h_0=0 and h_k=-1, total repayment mass is G+1.
-
-### Convergent-cycle boundary adjacency and drift
-
-Let qU=6,586,818,670, qL=65,470,613,321 and sigma(n)=n+qU mod k.
-
-The exact cycle certificate forces at least
-
-1,134,940,229
-
-sigma-edges with both endpoints on h=0.
-
-The exact drift certificate proves every such B-B edge except possibly 0->qU strictly decreases the actual Syracuse state in the sigma direction. Hence at least 1,134,940,228 forced B-B sigma edges are strict decreases.
-
-### Terminal suffix
-
-Combining terminal rigidity with the 29-state boundary-run cap gives
-
-boxed: k-m <=29,
-
-so the final return to h=0 occurs within the last 29 odd steps.
-
-### Important erratum
-
-Do **not** infer a global non-cheap-excursion fraction from the local `(21)^4` exclusion. Boundary waiting breaks that inference. The old global non-cheap counts are retracted.
+Important erratum remains in force: do **not** infer a global non-cheap-excursion fraction from the local `(21)^4` exclusion, because boundary waiting breaks that inference.
 
 ## 3. Branch B prime-turnover structure
 
@@ -149,7 +91,8 @@ eta_j in {3,15,63}.
 Committed consequences:
 
 - primes p>7 cannot divide consecutive sampled cofactors;
-- two-step recycling forces a discrete-log clock for 3/2 mod p;
+- two-step recycling forces a discrete-log / multiplicative-order clock for 3/2 mod p;
+- for any fixed recycle gap m, a recycled prime p>7 must divide an explicit correction integer D_{j,m};
 - bounded sampled odd-run lengths imply fixed-P smooth cofactors have density zero;
 - the escape tail faces an unbounded-spike / density-one prime-refresh dichotomy.
 
@@ -157,25 +100,24 @@ Committed consequences:
 
 ## 4. Current main target
 
-The best unconditional Branch-A targets are now:
+With Branch A closed, all effort should move to Branch B.
 
-1. upper-bound the realizable density of the exact upstep event r=2,a=1 strongly enough to contradict G>=3,133,460,928 or U+4V>=3,916,826,160;
-2. convert the >1.13 billion strictly descending qU-cycle B-B edges into an additional global restriction;
-3. continue targeted exclusion of exact-four-upstep pattern classes rather than brute-force the full four-upstep state space.
+The best current split is:
 
-Do not return to the retracted cheap-excursion shortcut. Do not make GRH a prerequisite unless a genuinely orbit-sensitive prime concentration theorem is found.
+1. **unbounded-spike branch:** q_j is unbounded. Exploit the resulting increasingly long odd runs and the forced simultaneous 2-adic / 3-adic alignment;
+2. **bounded-run prime-refresh branch:** q_j is eventually bounded. Then large prime factors must refresh on a density-one set of sampled times. Combine this with the multiplicative-order clock, S-unit finiteness, and correction summability to rule out indefinite escape.
+
+The desired next theorem is an orbit-sensitive prime-refresh obstruction, or a direct contradiction between `h_k -> infinity`, `sum 2^(-h_k)<infinity`, and the sampled recurrence.
+
+Do not spend more computation on exact-four Branch-A windows unless independently auditing the historical certificate machinery.
 
 ## 5. Files to read first after context loss
 
 1. `CURRENT_STATUS.md`
-2. `notes/2026-10-02-five-u-or-v-covering.md`
-3. `notes/2026-10-01-four-total-upsteps-covering.md`
-4. `src/translated_h1_exact_four_u_cert.cpp`
-5. `notes/2026-10-01-convergent-cycle-boundary-edges.md`
-6. `notes/2026-10-01-convergent-boundary-drift.md`
-7. `src/pair_constrained_boundary_density_cert.py`
-8. `notes/2026-10-01-boundary-run-29.md`
-9. `notes/2026-10-01-sharp-repayment-phase-gate.md`
-10. `notes/2026-10-02-grh-diagnostic.md`
+2. `notes/2026-10-03-branch-a-closed-by-recursive-sufficiency-frontier.md`
+3. `src/ansari_frontier_bridge_cert.py`
+4. `notes/2026-10-01-prime-turnover-clock.md`
+5. `notes/2026-10-02-grh-diagnostic.md`
+6. the Branch-B escape/summability notes and sampled mod-9 recurrence notes.
 
 These reconstruct the current state without relying on chat history.
