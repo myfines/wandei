@@ -2,18 +2,24 @@ from fractions import Fraction
 
 import first_contraction_cert as base
 
-"""Exact propagation of the 2026-10-02 live Barina verification frontier.
+"""Exact propagation of the 2026-10-04 live Barina verification frontier.
 
-The project status page reports the lowest incomplete work unit at
-2175975677 * 2^40, with all lower work units verified.  Hence a least positive
-counterexample, if any, satisfies N >= LIVE_N0 below.
+The public project status page reports the lowest incomplete work unit at
 
-This script keeps the existing first-candidate N_upper and pair-constrained
-weighted-boundary argument, substitutes the stronger live floor, and propagates
-it through the clean-window / exact-four overlap ladder.
+    2175982616 * 2^40,
+
+with all lower work units verified. Hence a least positive counterexample, if
+any, satisfies N >= LIVE_N0 below.
+
+This script keeps the internal first-candidate N_upper and pair-constrained
+weighted-boundary argument, substitutes the live floor, and propagates it
+through the clean-window machinery and the certified U4/U3V1 exclusions.
+
+The live status is an external changing datum; all arithmetic propagation below
+is exact once LIVE_N0 is fixed.
 """
 
-LIVE_N0 = 2_175_975_677 * (1 << 40)
+LIVE_N0 = 2_175_982_616 * (1 << 40)
 assert LIVE_N0 > base.N0
 
 q = base.qC
@@ -38,30 +44,30 @@ terminal_slack = 1
 
 threshold = (c * S_lo - H_sum_hi - terminal_slack) / lam
 z_min = threshold.numerator // threshold.denominator + 1
-assert z_min == 35_260_566_482
+assert z_min == 35_260_917_543
 
-# Sharpen the clean-window losses using the 29-state boundary-run cap.
-# A heavy transition has nonboundary source, so among its 46 possible starts
-# at most 44 can be boundary starts.  Likewise among the final 45 start times
-# that cannot support a complete 46-transition window, at most 44 are boundary.
+# Clean complete 46-step boundary-started windows.
 heavy_events_max = 5
 heavy_contamination_max = 44 * heavy_events_max
 terminal_incomplete_max = 44
 W_min = z_min - heavy_contamination_max - terminal_incomplete_max
-assert W_min == 35_260_566_218
+assert W_min == 35_260_917_279
 
-# Existing exact-four certificate excludes U4.  Therefore every exact-four
-# clean window has at least one positive-height upstep.  The overlap-ladder
-# bound for s=1 is ceil(((4+1/44)/45) W).
-num = Fraction(4, 1) + Fraction(1, 44)
-G_min = (num * W_min / 45)
-G_min_int = G_min.numerator // G_min.denominator + (G_min.denominator != 1)
-assert G_min_int == 3_152_080_920
+# After the exact U4 and U3V1 exclusions, every exact-four clean window has at
+# least two positive-source upsteps. The exact-q overlap argument in
+# notes/2026-10-03-u3v1-exclusion-and-221-charge.md gives
+#
+#     221 G >= 20 W.
 
-# If all exact-four clean windows are eventually excluded, every clean window
-# has at least five upsteps, so 5 W <= 45 G.
+def ceil_fraction(x: Fraction) -> int:
+    return x.numerator // x.denominator + (x.numerator % x.denominator != 0)
+
+G_min_int = ceil_fraction(Fraction(20 * W_min, 221))
+assert G_min_int == 3_191_033_238
+
+# Endpoint target if every exact-four clean class is eventually excluded.
 G_five_target = (W_min + 8) // 9
-assert G_five_target == 3_917_840_691
+assert G_five_target == 3_917_879_698
 
 if __name__ == "__main__":
     print("CERTIFIED")
