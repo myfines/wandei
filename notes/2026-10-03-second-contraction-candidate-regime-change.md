@@ -1,96 +1,39 @@
-# Second finite-contraction candidate: exact isolation and regime change
+# CONDITIONAL / INACTIVE: second finite-contraction candidate regime change
 
-Status: exact arithmetic consequence of the upgraded verification frontier and continued-fraction geometry. Not a Collatz proof.
+Status updated 2026-10-04: this note depends on the stronger floor
 
-The first finite-contraction candidate
+`F=4*3^44+2`,
 
-`(A,k)=(114208327604,72057431991)`
+which was previously imported from Ansari (2025), Proposition 3.2 / Remark 3.1. An exact audit found a failed set equality in the Lemma 3.1 sieve induction, so that frontier upgrade is not accepted as proved in this repository. See `notes/2026-10-04-erratum-ansari-frontier-import.md`.
 
-is already excluded by the published recursive-sufficiency frontier. The next question is the earliest later time at which a least counterexample could first have coefficient contraction.
+Therefore the material below is a **conditional diagnostic only**. It is not part of the active unconditional proof chain.
 
-## 1. Next candidate
+## Conditional statement
 
-Using the same Farey/continued-fraction geometry as `src/first_contraction_cert.py`, but with the stronger lower frontier
+If one independently establishes the floor
 
-`F = 4*3^44+2`,
+`N>=4*3^44+2`,
 
-`src/second_contraction_candidate_cert.py` certifies that the next upper candidate is
+then the same Farey/continued-fraction geometry isolates the next upper candidate after the first as
 
-`boxed: (A,k)=(217976794617,137528045312).`
+`(A,k)=(217976794617,137528045312)`.
 
-The reason is quantitative. Any first contraction above the frontier obeys
-
-`A/k - log_2 3 <= 1/(3 F log 2)`.
-
-The closest exterior upper mediant after the eliminated first candidate is
-
-`124648188195 / 78644250661`,
-
-and its gap from `log_2 3` is already strictly larger than the allowed window. The next upper convergent
-
-`217976794617 / 137528045312`
-
-lies inside the window.
-
-## 2. Mechanical seed ceiling
-
-Write
-
-`D = A log 2 - k log 3 > 0`.
-
-For this candidate the exact log intervals give
-
-`D ~= 8.9865487086179247e-13`.
-
-Since
-
-`k = 2*65470613321 + 6586818670`,
-
-the mechanical correction sum splits into three convergent-denominator blocks. Denjoy-Koksma gives
-
-`sum_{j<k} 2^{-theta_j} <= k/(2 log 2)+3`.
-
-Using `e^D-1 >= D`, the same affine rescue argument as for the first candidate yields the rigorous upper bound
-
-`N < N_upper`,
-
-with
+`src/second_contraction_candidate_cert.py` conditionally certifies this and gives a mechanical seed ceiling with
 
 `log_2 N_upper ~= 74.962036844899...`.
 
-By comparison, the imported verification frontier is
+Under the same assumed floor, the survival correction ratio would only need
 
-`log_2 F ~= 71.738350031731...`.
+`R > F/N_upper ~= 0.107046771248413... < 1/2`,
 
-So this candidate is not swallowed by the present frontier.
+showing a qualitative regime change: the first-candidate high-boundary-density relaxation would no longer force positive boundary density.
 
-## 3. Regime change in the correction budget
+This conditional observation may become useful if the stronger frontier is independently proved in the future.
 
-Survival only requires
+## Active route
 
-`R > F/N_upper`.
+Until then, return to the first finite-contraction candidate
 
-The exact certificate gives
+`(A,k)=(114208327604,72057431991)`
 
-`boxed: F/N_upper ~= 0.107046771248413... < 1/2.`
-
-This is qualitatively different from the first candidate, where the required correction ratio was above `0.76` and therefore forced a very large density of exact boundary states `h=0`.
-
-When the survival threshold falls below `1/2`, the old worst-case weighted-average argument no longer forces any positive density of boundary contacts: an orbit could, at the level of that relaxation, spend essentially all of its time at defect one and still exceed the required correction ratio.
-
-Therefore the historical first-candidate strategy
-
-`high correction ratio -> huge boundary density -> many translated boundary windows`
-
-cannot simply be transplanted to the second candidate.
-
-## 4. Consequence for the research strategy
-
-The second candidate requires a different global resource. The strongest current possibilities are:
-
-1. optimize the full weighted defect distribution rather than only `h=0` density;
-2. use several continued-fraction shifts simultaneously and seek a forced directed cycle of strict state-decrease edges;
-3. exploit arithmetic realizability of long low-defect paths, not merely their correction weight;
-4. strengthen the external verified frontier enough to swallow more finite-contraction candidates.
-
-This note is specifically a warning against reusing first-candidate boundary-density constants outside their valid regime.
+using the independently recorded live Barina floor and the repository's internal exact certificates.
