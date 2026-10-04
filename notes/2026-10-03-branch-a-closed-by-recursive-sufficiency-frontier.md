@@ -1,81 +1,45 @@
-# First coefficient-contraction candidate is swallowed by the recursive-sufficiency frontier
+# RETRACTED: first-candidate closure by recursive-sufficiency frontier
 
-Status: closes the **first** coefficient-contraction candidate, assuming the published 2025 recursive-sufficiency theorem (Ansari, Proposition 3.2) is accepted. It does **not** eliminate later possible first-contraction candidates, and it is not a proof of Collatz.
+Status: **retracted on 2026-10-04**. This file is retained as a provenance record. The numerical comparison inside it is correct, but the external theorem needed to upgrade the verification frontier is not currently established by the cited paper's proof.
 
-## 1. Published external theorem
+## Retraction
 
-Mohammad Ansari, *Recursive sufficiency for the Collatz conjecture and computational verification*, Notes on Number Theory and Discrete Mathematics 31(3) (2025), 471–480, Proposition 3.2, proves the following propagation rule.
+This note previously imported Ansari (2025), Proposition 3.2 / Remark 3.1, to infer that verification below `2^71` extends to
 
-If
+`L=4*3^44+2`.
 
-`M = 2*3^n + 1`
+A later exact audit found that the specific sieve construction used to prove the proposition has a failed induction identity in Lemma 3.1. At the displayed `n=1` step, inside the first block `0<=k<9`, the claimed left side contains
 
-and all positive integers up to `M` satisfy Collatz, then all integers in `(M,2M]` satisfy Collatz as well.
+`{3,7,11,15,19,23,27,31}`
 
-Remark 3.1 applies this with the verified range below `2^71`. Taking `n=44`,
+while the claimed `F_2` is only
 
-`M = 2*3^44 + 1 < 2^71`,
+`{3,7,15,19}`.
 
-hence every integer up to
+Thus `11` is an explicit witness that the equality used in the induction is false. The separate omission of `3` in Lemma 3.2 is not the main problem and does not repair this failure.
 
-`L = 2M = 4*3^44 + 2`
+See `notes/2026-10-04-erratum-ansari-frontier-import.md`.
 
-satisfies Collatz.
+## What remains true
 
-### Audit note
-
-Lemma 3.2 as printed omits the element `3` from the displayed parametrization of the infinite intersection of the recursively sufficient sets: `3` belongs to every `F_n`. The corrected intersection is `{3} union E`. This does not affect Proposition 3.2, because `3 < M` and the gap `(M,2M]` is unchanged. The recursive-set closure steps used in Lemma 3.1 were checked separately and no obstruction to Proposition 3.2 was found.
-
-## 2. First finite-contraction candidate
-
-The repository isolates the first continued-fraction candidate
+The repository's internal first-candidate certificate independently proves that a least counterexample realizing
 
 `(A,k)=(114208327604,72057431991)`
 
-for the first coefficient contraction of a least counterexample above the old live frontier. For this candidate the exact first-contraction certificate proves the rigorous coarse seed bound
+must satisfy
 
-`N < (4/3)*2^71`.
+`N < (4/3)*2^71`,
 
-A sharper bound near `2^71.413083842` also exists but is unnecessary here.
+with a sharper mechanical ceiling near `2^71.413083842`.
 
-## 3. Exact frontier comparison
+Also, `src/ansari_frontier_bridge_cert.py` correctly checks the purely arithmetic implication
 
-`src/ansari_frontier_bridge_cert.py` checks exactly that
+`4*3^44+2 > (4/3)*2^71`.
 
-`2*3^44 + 1 < 2^71`
+But this comparison is only conditional: without an independently proved reason that every integer through `4*3^44+2` converges, it does **not** eliminate the candidate.
 
-and
+## Active status
 
-`4*3^44 + 2 > (4/3)*2^71`.
+The first coefficient-contraction candidate is OPEN again. Return to the internal proof chain based on the live Barina floor, weighted boundary density, 29-state boundary-run cap, translated finite certificates, exact-four exclusions, and convergent-cycle drift.
 
-Therefore every seed capable of realizing this **first candidate** is already below the published upgraded verification frontier.
-
-Hence
-
-`boxed: the k=72,057,431,991 first-contraction candidate is impossible.}`
-
-## 4. What remains
-
-This does **not** imply that coefficient contraction can never occur. A hypothetical least counterexample could remain noncontracting at the first candidate and first contract at a later sufficiently good upper approximation to `log_2 3`.
-
-The next natural upper convergent after the eliminated candidate is
-
-`(A,k)=(217976794617,137528045312)`.
-
-Thus the finite-contraction route should now be restarted with the upgraded lower frontier
-
-`N >= 4*3^44+2`
-
-and the next candidate `k=137,528,045,312`.
-
-Separately, the genuine no-contraction escape route remains open:
-
-`h_n>=0 for all n`,
-
-and for a divergent orbit the existing argument gives
-
-`h_n -> infinity`,
-
-`sum_n 2^{-h_n} < infinity`.
-
-The main value of the recursive-sufficiency theorem here is therefore a free elimination of the entire first 72-billion-step contraction candidate, not a closure of every finite-contraction possibility.
+No proof of Collatz is claimed.
