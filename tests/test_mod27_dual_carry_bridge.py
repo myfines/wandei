@@ -2,7 +2,7 @@ import sys
 import unittest
 from fractions import Fraction
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parent))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from mod27_dual_carry_bridge import (
     THRESHOLDS,odd_step,actual_block_hits,target_hit_count,
     phase_threshold,suffix9,suffix27,minimum_consecutive_hit_cost,
