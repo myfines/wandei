@@ -93,3 +93,16 @@ Exact benchmark X=5000, maximum odd depth d=8:
 No positive-orbit convergence conclusion follows from these theorems. The missing result is a **uniform depth-growing, height-sensitive, coefficient-wise** lower bound for the entire 1-basin, one that would disallow even a single omitted positive odd integer. RH proof methods may inspire formalization but RH itself is not shown to imply such a bound.
 
 Related: Bernstein–Lagarias (1996) 2-adic conjugacy; Stérin–Woods (2020) base conversion; contemporary inverse-tree/spectral preprints including https://hexagonmath.org/2610.00681v1. These results should not be claimed original without deeper literature review.
+
+
+## 7. Exact three-space phase-return cocycle
+
+Fix a target m (positive odd, 3∤m), q>=1, M=3^q, and any non-self inverse turn t>=t0(m). Let n=R_m(t), n'=R_m(t+M). Then all three identities hold **exactly**:
+
+    n' == n (mod 3^q),  v3(n'-n)=q,
+    v2(3n'+1)-v2(3n+1)=2*3^q,
+    (3n'+1)/(3n+1)=4^(3^q).
+
+The first identity follows from the LTE/isometry identity v3(R_m(t)-R_m(u))=v3(t-u); importantly the next 3-adic digit does **not** agree. The second and third follow from 3R_m(t)+1=2^(a0(m)+2t)m. A single q-digit 3-adic phase 'full rotation' has an exact 2-adic exponent jump and an exponential Archimedean height cost. This is the main real/2-adic/3-adic arithmetic cocycle of this checkpoint.
+
+This does not impose a global decreasing potential on an arbitrary forward orbit, and no direct implication from the formally verified RH theorem is claimed.
