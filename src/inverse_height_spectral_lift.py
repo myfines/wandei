@@ -104,6 +104,17 @@ def full_phase_height(m,q):
     return parent_preimage(m,first_turn(m)+3**q-1)
 
 
+def phase_return_lift(m,q,t):
+    """Exact full 3^q turn return, with a 2-adic valuation jump."""
+    M=3**q
+    n=parent_preimage(m,t)
+    nxt=parent_preimage(m,t+M)
+    assert (nxt-n)%M==0
+    assert (nxt-n)%(3*M)!=0
+    assert 3*nxt+1==4**M*(3*n+1)
+    return n,nxt,2*M
+
+
 def ray_phase_energy(m,q,turns):
     """For 0<=turns<=3^q, exact nonzero unweighted Fourier energy."""
     M=3**q
