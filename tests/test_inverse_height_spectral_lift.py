@@ -8,11 +8,21 @@ from inverse_height_spectral_lift import (
  inverse_levels,forward_first_hits,residues,phase_energy,sparse_energy_floor,
  ray_residues,full_phase_height,ray_phase_energy,
  full_ray_weighted_energy,exact_zeta_moment,total_node_bound,
- numeric_fourier,benchmark
+ numeric_fourier,benchmark,phase_return_lift
 )
 
 
 class InverseHeightSpectrumTests(unittest.TestCase):
+    def test_three_space_phase_return_cocycle(self):
+        for m in (1,5,7,11):
+            for q in range(1,6):
+                for t in (first_turn(m),first_turn(m)+1,first_turn(m)+5):
+                    n,y,jump=phase_return_lift(m,q,t)
+                    self.assertEqual(jump,2*3**q)
+                    self.assertEqual((y-n)%(3**q),0)
+                    self.assertNotEqual((y-n)%(3**(q+1)),0)
+                    self.assertEqual(3*y+1,(3*n+1)*4**(3**q))
+
     def test_exact_inverse_edges(self):
         for m in range(1,100,2):
             if m%3==0:continue
