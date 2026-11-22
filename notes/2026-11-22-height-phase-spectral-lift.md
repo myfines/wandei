@@ -106,3 +106,14 @@ Fix a target m (positive odd, 3∤m), q>=1, M=3^q, and any non-self inverse turn
 The first identity follows from the LTE/isometry identity v3(R_m(t)-R_m(u))=v3(t-u); importantly the next 3-adic digit does **not** agree. The second and third follow from 3R_m(t)+1=2^(a0(m)+2t)m. A single q-digit 3-adic phase 'full rotation' has an exact 2-adic exponent jump and an exponential Archimedean height cost. This is the main real/2-adic/3-adic arithmetic cocycle of this checkpoint.
 
 This does not impose a global decreasing potential on an arbitrary forward orbit, and no direct implication from the formally verified RH theorem is claimed.
+
+
+## 8. Quantitative no-go for any purely 3-adic continuous height observable
+
+Fix positive odd target m and a turn t>=t0(m). Put n_q=R_m(t+3^q). Then **simultaneously**:
+
+    n_q -> R_m(t) in Z_3 because v3(n_q-R_m(t))=q -> infinity;
+
+    log(3n_q+1)-log(3R_m(t)+1)=3^q*log 4 -> infinity.
+
+Hence there is **no** continuous real-valued function H:Z_3→R agreeing with the positive-real logarithmic height log(3n+1) even just on the genuine direct inverse ancestors of a single fixed m. Indeed continuity at the limiting 3-adic point would force H(n_q) to converge to a finite value, contradicting the exact height divergence. This rules out treating Archimedean growth as a continuous function of 3-adic phase alone; a genuinely higher-dimensional real × 2-adic × 3-adic state is necessary. Still no global Collatz theorem follows.
