@@ -36,7 +36,7 @@ For any prefix of c containing h hit blocks and ell nonhit blocks **after** the 
 
 Since (3/2)^10*(3/128)=177147/131072 >1, every nonempty prefix has linear coefficient >1 (unless no steps were taken). Every additive Collatz correction is positive, so every intermediate odd state satisfies S^j(n)>n for all j=1,...,10H+L.
 
-Thus arbitrary long adjacent hit runs, or any prescribed finite binary target word, can be preceded by sufficient legitimate growth credit while remaining above the ORIGINAL seed throughout. The construction is finite and seed-dependent, not a divergent orbit.
+Thus arbitrary long adjacent hit runs, or any prescribed finite binary target word, can be preceded by sufficient legitimate growth credit while remaining above the ORIGINAL seed throughout. **This even holds at every intermediate shortcut T-step**, not just odd-only checkpoints: inside each odd block, successive shortcut states (3x+1)/2^j decrease with j and are therefore all at least the final odd endpoint S(x)>n. The construction is finite and seed-dependent, not a divergent orbit.
 
 ## Theorem 3: Arbitrarily long target-free growth
 
