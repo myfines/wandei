@@ -61,6 +61,19 @@ class TargetGapLanguageTests(unittest.TestCase):
                 self.assertEqual(seed % 9, 8)
         self.assertGreater(Fraction(3,2)**10 * Fraction(3,128), 1)
 
+    def test_growth_credit_covers_every_shortcut_intermediate(self):
+        for L in range(1, 8):
+            for bits in product((0, 1), repeat=L):
+                H = sum(bits)
+                word = (1,) * (10 * H) + tuple(1 + 6*b for b in bits)
+                seed, _ = seed_for_word(word, 8)
+                x = seed
+                for a in word:
+                    for _ in range(a):
+                        x = (3*x+1)//2 if x & 1 else x//2
+                        self.assertGreater(x, seed)
+                    self.assertTrue(x & 1)
+
     def test_fixed_gap_expanding_shadows(self):
         for g in range(1, 19):
             C = 3**(g+1) - 2**(g+1)
